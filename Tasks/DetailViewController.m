@@ -40,8 +40,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view, typically from a nib.
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                             initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                             target:self
+                                             action:@selector(saveAndDissmis:)];
+
+    self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone;
+    
     [self configureView];
+}
+
+- (void)saveAndDissmis:(id)sender {
+    [self.parentViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)didReceiveMemoryWarning {
