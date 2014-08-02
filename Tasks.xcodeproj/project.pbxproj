@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DACA8D0E198B055D002E4EC9 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8D0D198B055D002E4EC9 /* TaskListViewController.m */; };
+		DAD6E144198C2EF600CC9B1C /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD6E143198C2EF600CC9B1C /* NSString+UUID.m */; };
 		DAFB8C9A198AD3FA00B854AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8C99198AD3FA00B854AB /* main.m */; };
 		DAFB8C9D198AD3FA00B854AB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8C9C198AD3FA00B854AB /* AppDelegate.m */; };
 		DAFB8CA0198AD3FA00B854AB /* Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8C9E198AD3FA00B854AB /* Tasks.xcdatamodeld */; };
@@ -28,6 +30,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DACA8D0D198B055D002E4EC9 /* TaskListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskListViewController.m; sourceTree = "<group>"; };
+		DACA8D0F198B057E002E4EC9 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
+		DAD6E143198C2EF600CC9B1C /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
+		DAD6E145198C2F5E00CC9B1C /* NSString+UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UUID.h"; sourceTree = "<group>"; };
 		DAFB8C94198AD3F900B854AB /* Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAFB8C98198AD3FA00B854AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAFB8C99198AD3FA00B854AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -94,6 +100,10 @@
 				DAFB8CAA198AD3FA00B854AB /* Images.xcassets */,
 				DAFB8C9E198AD3FA00B854AB /* Tasks.xcdatamodeld */,
 				DAFB8C97198AD3FA00B854AB /* Supporting Files */,
+				DACA8D0D198B055D002E4EC9 /* TaskListViewController.m */,
+				DACA8D0F198B057E002E4EC9 /* TaskListViewController.h */,
+				DAD6E143198C2EF600CC9B1C /* NSString+UUID.m */,
+				DAD6E145198C2F5E00CC9B1C /* NSString+UUID.h */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
@@ -224,6 +234,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAFB8CA6198AD3FA00B854AB /* DetailViewController.m in Sources */,
+				DAD6E144198C2EF600CC9B1C /* NSString+UUID.m in Sources */,
+				DACA8D0E198B055D002E4EC9 /* TaskListViewController.m in Sources */,
 				DAFB8CA3198AD3FA00B854AB /* MasterViewController.m in Sources */,
 				DAFB8C9D198AD3FA00B854AB /* AppDelegate.m in Sources */,
 				DAFB8C9A198AD3FA00B854AB /* main.m in Sources */,
@@ -416,6 +428,7 @@
 				DAFB8CBC198AD3FB00B854AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DAFB8CBD198AD3FB00B854AB /* Build configuration list for PBXNativeTarget "TasksTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +437,7 @@
 				DAFB8CBF198AD3FB00B854AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

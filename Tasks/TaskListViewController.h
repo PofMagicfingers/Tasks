@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@class DetailViewController;
+//@class TaskDetailsViewController;
 
-@interface MasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
+@interface TaskListViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic) DetailViewController *detailViewController;
+//@property (strong, nonatomic) TaskDetailsController *detailViewController;
 
+@property (strong, nonatomic) NSManagedObject *list;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 

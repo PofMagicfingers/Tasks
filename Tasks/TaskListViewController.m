@@ -6,18 +6,18 @@
 //  Copyright (c) 2014 Pof Magicfingers. All rights reserved.
 //
 
-#import "MasterViewController.h"
-#import "DetailViewController.h"
 #import "TaskListViewController.h"
 #import "NSString+UUID.h"
 
-@interface MasterViewController ()
-            
+//#import "TaskDetailsViewController.h"
+
+@interface TaskListViewController ()
+
 
 @end
 
-@implementation MasterViewController
-            
+@implementation TaskListViewController
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -29,13 +29,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    self.navigationItem.rightBarButtonItem = addButton;
-    self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
-    self.toolbarItems = [NSArray new]; // Reset toolbar items
-    self.navigationController.toolbarHidden = YES;
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.toolbarItems = [NSArray
+                         arrayWithObject:[[UIBarButtonItem alloc]
+                                          initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                          target:self
+                                          action:@selector(insertNewObject:)]];
+    
+    self.navigationController.toolbarHidden = NO;
+    
+    if(self.list) {
+        self.title = [self.list valueForKey:@"title"];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+        [[[UIAlertView alloc] initWithTitle:@"Error"
+                                   message:@"Something went wrong!"
+                                  delegate:nil
+                         cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,24 +57,55 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)setTaskCompleted:(UITapGestureRecognizer *)tapRecognizer {
+    CGPoint tapLocation = [tapRecognizer locationInView:self.tableView];
+    NSIndexPath *tappedIndexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:tappedIndexPath];
+
+    if([object valueForKey:@"completed_at"] == nil) {
+        [object setValue:[NSDate date] forKey:@"completed_at"];
+    } else {
+        [object setValue:nil forKey:@"completed_at"];
+    }
+    
+    
+    [object setValue:[NSDate date] forKey:@"updated_at"];
+    [self.list setValue:[NSDate date] forKey:@"updated_at"];
+    
+    // Save the context.
+    NSError *error = nil;
+    if ([context save:&error]) {
+        [self.tableView
+         reloadRowsAtIndexPaths:[NSArray
+                                 arrayWithObject:tappedIndexPath]
+         withRowAnimation: UITableViewRowAnimationNone];
+    } else {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
 - (void)insertNewObject:(id)sender {
     UIAlertView *newTaskList = [[UIAlertView alloc]
-                                    initWithTitle:@"New Task List"
-                                    message:@""
-                                    delegate:self
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Create", nil];
+                                initWithTitle:@"New Task"
+                                message:@""
+                                delegate:self
+                                cancelButtonTitle:@"Cancel"
+                                otherButtonTitles:@"Create", nil];
     newTaskList.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [[newTaskList textFieldAtIndex:0] setPlaceholder:@"My list"];
+    [[newTaskList textFieldAtIndex:0] setPlaceholder:@"A task"];
     newTaskList.tag = 202;
     [newTaskList show];
 }
 
-- (void)createTaskList:(NSString *)title {
+- (void)createList:(NSString *)title {
     if(title == nil || [[title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
         UIAlertView *noTitle = [[UIAlertView alloc]
-                                initWithTitle:@"New Task List"
-                                message:@"It's impossible to create a task list without a title!"
+                                initWithTitle:@"New Task"
+                                message:@"It's impossible to create a task without a title!"
                                 delegate:self
                                 cancelButtonTitle:@"I won't do it again..."
                                 otherButtonTitles:nil];
@@ -78,7 +123,9 @@
                                     stringByAppendingString:[NSString UUID]]
                             forKey:@"id"];
         [newManagedObject setValue:title forKey:@"title"];
+        [newManagedObject setValue:self.list forKey:@"list"];
         [newManagedObject setValue:[NSDate date] forKey:@"updated_at"];
+        [self.list setValue:[NSDate date] forKey:@"updated_at"];
         
         // Save the context.
         NSError *error = nil;
@@ -94,13 +141,10 @@
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        [(DetailViewController *)[segue destinationViewController] setDetailItem:object];
-    } else if ([[segue identifier] isEqualToString:@"show"]) {
-        [(TaskListViewController *)[segue destinationViewController] setList:object];
-        [(TaskListViewController *)[segue destinationViewController] setManagedObjectContext:self.managedObjectContext];
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+//        [(DetailViewController *)[[segue destinationViewController] topViewController] setDetailItem:object];
     }
 }
 
@@ -130,7 +174,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-            
+        
         NSError *error = nil;
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
@@ -142,21 +186,25 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-//
-//    TaskListViewController *taskList = [[TaskListViewController alloc] init];
-//    
-//    taskList.list = [object valueForKey:@"id"];
-//    taskList.managedObjectContext = self.managedObjectContext;
-//    
-//    [self.navigationController pushViewController:taskList animated:YES];
-//    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 //        self.detailViewController.detailItem = object;
-//    }
+    }
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    if ([object valueForKey:@"completed_at"] == nil) {
+        cell.imageView.image = [UIImage imageNamed:@"unchecked"];
+    } else {
+        cell.imageView.image = [UIImage imageNamed:@"checked"];
+    }
+
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setTaskCompleted:)];
+    [cell.imageView addGestureRecognizer:tap];
+    cell.imageView.userInteractionEnabled = YES; //added based on @John 's comment
+    
     cell.textLabel.text = [object valueForKey:@"title"];
     cell.detailTextLabel.text = [[object valueForKey:@"updated_at"] description];
 }
@@ -169,36 +217,40 @@
         return _fetchedResultsController;
     }
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"TaskList" inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:20];
-    
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"updated_at" ascending:NO];
-    NSArray *sortDescriptors = @[sortDescriptor];
-    
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"TaskLists"];
-    aFetchedResultsController.delegate = self;
-    self.fetchedResultsController = aFetchedResultsController;
-    
-	NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error]) {
-	     // Replace this implementation with code to handle the error appropriately.
-	     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
-	}
-    
-    return _fetchedResultsController;
-}    
+    if (self.list && [self.list valueForKey:@"id"]) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        // Edit the entity name as appropriate.
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Task" inManagedObjectContext:self.managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        // Set the batch size to a suitable number.
+        [fetchRequest setFetchBatchSize:20];
+        
+        // Edit the sort key as appropriate.
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"updated_at" ascending:NO];
+        NSArray *sortDescriptors = @[sortDescriptor];
+        
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"list == %@", self.list]];
+        
+        // Edit the section name key path and cache name if appropriate.
+        // nil for section name key path means "no sections".
+        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:[@"Tasks_" stringByAppendingString:[self.list valueForKey:@"id"]]];
+        aFetchedResultsController.delegate = self;
+        self.fetchedResultsController = aFetchedResultsController;
+        
+        NSError *error = nil;
+        if (![self.fetchedResultsController performFetch:&error]) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+        return _fetchedResultsController;
+    }
+
+    return nil;
+}
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
@@ -251,13 +303,13 @@
 }
 
 /*
-// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
+ // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed.
  
  - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
-}
+ {
+ // In the simplest, most efficient, case, reload the table view.
+ [self.tableView reloadData];
+ }
  */
 
 #pragma mark - Alert View
@@ -265,7 +317,7 @@
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if(alertView.tag == 202) {
         if(buttonIndex != alertView.cancelButtonIndex)
-            [self createTaskList:[[alertView textFieldAtIndex:0] text]];
+            [self createList:[[alertView textFieldAtIndex:0] text]];
     } else if(alertView.tag == 400) {
         [self insertNewObject:self];
     }
