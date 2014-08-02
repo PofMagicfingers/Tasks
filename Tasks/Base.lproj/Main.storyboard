@@ -59,7 +59,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1194" y="6"/>
+            <point key="canvasLocation" x="2409" y="-114"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">
@@ -73,7 +73,7 @@
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cZU-Oi-B1e" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-631" y="6"/>
+            <point key="canvasLocation" x="-629" y="-114"/>
         </scene>
         <!--Master View Controller - Master-->
         <scene sceneID="smW-Zh-WAh">
@@ -113,7 +113,6 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="6KX-W6-LNy" kind="show" identifier="show" id="Zaf-qh-J1z"/>
-                                    <segue destination="JEX-9P-axG" kind="showDetail" identifier="showDetail" trigger="accessoryAction" id="Vaa-WN-XZv"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -143,7 +142,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SLD-UC-DBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="592" y="6"/>
+            <point key="canvasLocation" x="1789" y="-114"/>
         </scene>
         <!--Task List View Controller - Master-->
         <scene sceneID="Qf0-fy-a7a">
@@ -155,7 +154,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" ambiguous="YES" selectionStyle="none" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="oeZ-S4-yNE" detailTextLabel="6ld-u1-Xxf" imageView="86S-mQ-4z5" style="IBUITableViewCellStyleSubtitle" id="t2I-gG-8oq">
+                            <tableViewCell contentMode="scaleToFill" ambiguous="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="oeZ-S4-yNE" detailTextLabel="6ld-u1-Xxf" imageView="86S-mQ-4z5" style="IBUITableViewCellStyleSubtitle" id="t2I-gG-8oq">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t2I-gG-8oq" id="tUY-SD-GID">
@@ -181,6 +180,9 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="vC3-pB-5Vb" kind="showDetail" id="0b1-lB-dGh"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
@@ -202,6 +204,6 @@
         <image name="unchecked" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Vaa-WN-XZv"/>
+        <segue reference="0b1-lB-dGh"/>
     </inferredMetricsTieBreakers>
 </document>

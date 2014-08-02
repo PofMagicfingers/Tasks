@@ -15,8 +15,9 @@
         <attribute name="updated_at" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
-        <relationship name="list" maxCount="1" deletionRule="Deny" destinationEntity="TaskList" inverseName="tasks" inverseEntity="TaskList" syncable="YES"/>
-        <relationship name="parent" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Task" syncable="YES"/>
+        <relationship name="children_tasks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="parent" inverseEntity="Task" syncable="YES"/>
+        <relationship name="list" maxCount="1" deletionRule="No Action" destinationEntity="TaskList" inverseName="tasks" inverseEntity="TaskList" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Task" inverseName="children_tasks" inverseEntity="Task" syncable="YES"/>
         <userInfo/>
     </entity>
     <entity name="TaskList" syncable="YES">
@@ -28,7 +29,7 @@
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Task" inverseName="list" inverseEntity="Task" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Task" positionX="495" positionY="-27" width="128" height="30"/>
+        <element name="Task" positionX="495" positionY="-27" width="128" height="270"/>
         <element name="TaskList" positionX="261" positionY="207" width="128" height="30"/>
     </elements>
 </model>

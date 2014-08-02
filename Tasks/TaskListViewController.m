@@ -101,17 +101,17 @@
     [newTaskList show];
 }
 
-- (void)createList:(NSString *)title {
-    if(title == nil || [[title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
-        UIAlertView *noTitle = [[UIAlertView alloc]
+- (void)createTask:(NSString *)name {
+    if(name == nil || [[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
+        UIAlertView *noName = [[UIAlertView alloc]
                                 initWithTitle:@"New Task"
-                                message:@"It's impossible to create a task without a title!"
+                                message:@"It's impossible to create a task without a name!"
                                 delegate:self
                                 cancelButtonTitle:@"I won't do it again..."
                                 otherButtonTitles:nil];
         
-        noTitle.tag = 400;
-        [noTitle show];
+        noName.tag = 400;
+        [noName show];
     } else {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
@@ -122,7 +122,7 @@
         [newManagedObject setValue:[@"local_"
                                     stringByAppendingString:[NSString UUID]]
                             forKey:@"id"];
-        [newManagedObject setValue:title forKey:@"title"];
+        [newManagedObject setValue:name forKey:@"title"];
         [newManagedObject setValue:self.list forKey:@"list"];
         [newManagedObject setValue:[NSDate date] forKey:@"updated_at"];
         [self.list setValue:[NSDate date] forKey:@"updated_at"];
@@ -317,7 +317,7 @@
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if(alertView.tag == 202) {
         if(buttonIndex != alertView.cancelButtonIndex)
-            [self createList:[[alertView textFieldAtIndex:0] text]];
+            [self createTask:[[alertView textFieldAtIndex:0] text]];
     } else if(alertView.tag == 400) {
         [self insertNewObject:self];
     }
