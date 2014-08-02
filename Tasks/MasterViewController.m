@@ -12,7 +12,8 @@
 #import "NSString+UUID.h"
 
 @interface MasterViewController ()
-            
+
+@property (strong, nonatomic) NSManagedObject *_renaming_object;
 
 @end
 
@@ -51,8 +52,25 @@
                                     otherButtonTitles:@"Create", nil];
     newTaskList.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[newTaskList textFieldAtIndex:0] setPlaceholder:@"My list"];
+    [[newTaskList textFieldAtIndex:0] setReturnKeyType:UIReturnKeyDone];
     newTaskList.tag = 202;
     [newTaskList show];
+}
+
+- (void)renameTaskList:(NSManagedObject *)taskList {
+    self._renaming_object = taskList;
+    UIAlertView *renameTaskList = [[UIAlertView alloc]
+                                initWithTitle:@"Rename Task List"
+                                message:@""
+                                delegate:self
+                                cancelButtonTitle:@"Cancel"
+                                otherButtonTitles:@"Rename", nil];
+    renameTaskList.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [[renameTaskList textFieldAtIndex:0] setPlaceholder:[taskList valueForKey:@"title"]];
+    [[renameTaskList textFieldAtIndex:0] setText:[taskList valueForKey:@"title"]];
+    [[renameTaskList textFieldAtIndex:0] setReturnKeyType:UIReturnKeyDone];
+    renameTaskList.tag = 102;
+    [renameTaskList show];
 }
 
 - (void)createTaskList:(NSString *)title {
@@ -152,6 +170,11 @@
 //    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 //        self.detailViewController.detailItem = object;
 //    }
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    [self renameTaskList:object];
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -267,6 +290,29 @@
             [self createTaskList:[[alertView textFieldAtIndex:0] text]];
     } else if(alertView.tag == 400) {
         [self insertNewObject:self];
+    } else if(alertView.tag == 102) {
+        if(buttonIndex != alertView.cancelButtonIndex) {
+            NSString *new_title = [[alertView textFieldAtIndex:0] text];
+            if ([new_title respondsToSelector:@selector(isEqualToString:)] &&
+                ![[new_title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
+                NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+                
+                // If appropriate, configure the new managed object.
+                // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
+                [self._renaming_object setValue:new_title forKey:@"title"];
+                [self._renaming_object setValue:[NSDate date] forKey:@"updated_at"];
+                
+                // Save the context.
+                NSError *error = nil;
+                if (![context save:&error]) {
+                    // Replace this implementation with code to handle the error appropriately.
+                    // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                    abort();
+                }
+            }
+        }
+        self._renaming_object = nil;
     }
 }
 
