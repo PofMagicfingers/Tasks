@@ -11,6 +11,9 @@
 #import "TaskListViewController.h"
 #import "NSString+UUID.h"
 
+#import "GTLTasks.h"
+#import "GTMOAuth2ViewControllerTouch.h"
+
 @interface MasterViewController ()
 
 @property (strong, nonatomic) NSManagedObject *_renaming_object;
@@ -34,8 +37,31 @@
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
-    self.toolbarItems = [NSArray new]; // Reset toolbar items
-    self.navigationController.toolbarHidden = YES;
+    self.toolbarItems = [NSArray arrayWithObject:[[UIBarButtonItem alloc]
+                                                  initWithTitle:@"Sync"
+                                                  style:UIBarButtonItemStyleBordered
+                                                  target:self
+                                                  action:@selector(connectGoogle:)]]; // Reset toolbar items
+    self.navigationController.toolbarHidden = NO;
+}
+
+- (void)connectGoogle:(id)sender {
+    GTMOAuth2ViewControllerTouch *controller = [[GTMOAuth2ViewControllerTouch alloc]
+                                                initWithScope:kGTLAuthScopeTasks
+                                                clientID:@"8662706613-hh2j6loit2ot6343oct9sjus3l3303lm.apps.googleusercontent.com"
+                                                clientSecret:@"BzzfnnyuaXM1Tc4-seXy8mYe"
+                                                keychainItemName:@"Tasks_GSync"
+                                                completionHandler:^(GTMOAuth2ViewControllerTouch *viewController,
+                                                                    GTMOAuth2Authentication *auth,
+                                                                    NSError *error) {
+                                                    if (error) {
+                                                        NSLog(@"Error authenticating user:\n   %@", error);
+                                                    } else {
+                                                        NSLog(@"OKay for user :\n   %@", auth);
+                                                    }
+                                                }];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

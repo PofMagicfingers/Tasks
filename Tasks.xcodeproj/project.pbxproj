@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA31DBF0198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA31DBEF198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib */; };
+		DA7C1009198F9AC700F6D52C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1006198F9A8A00F6D52C /* CoreData.framework */; };
+		DA7C100A198F9AC700F6D52C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1004198F9A8300F6D52C /* Foundation.framework */; };
+		DA7C102C198FA17600F6D52C /* libGTLTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1027198FA16100F6D52C /* libGTLTouchStaticLib.a */; };
+		DA7C102E198FA1B600F6D52C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C102D198FA1B600F6D52C /* SystemConfiguration.framework */; };
+		DA7C103F198FA2B700F6D52C /* GTLQueryTasks.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7C1031198FA2B700F6D52C /* GTLQueryTasks.m */; };
+		DA7C1040198FA2B700F6D52C /* GTLServiceTasks.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7C1033198FA2B700F6D52C /* GTLServiceTasks.m */; };
+		DA7C1041198FA2B700F6D52C /* GTLTasksConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7C1036198FA2B700F6D52C /* GTLTasksConstants.m */; };
+		DA7C1042198FA2B700F6D52C /* GTLTasksTask.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7C1038198FA2B700F6D52C /* GTLTasksTask.m */; };
+		DA7C1043198FA2B700F6D52C /* GTLTasksTaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7C103A198FA2B700F6D52C /* GTLTasksTaskList.m */; };
+		DA7C1044198FA2B700F6D52C /* GTLTasksTaskLists.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7C103C198FA2B700F6D52C /* GTLTasksTaskLists.m */; };
+		DA7C1045198FA2B700F6D52C /* GTLTasksTasks.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7C103E198FA2B700F6D52C /* GTLTasksTasks.m */; };
 		DACA8D0E198B055D002E4EC9 /* TaskListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8D0D198B055D002E4EC9 /* TaskListViewController.m */; };
 		DAD6E144198C2EF600CC9B1C /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD6E143198C2EF600CC9B1C /* NSString+UUID.m */; };
 		DAFB8C9A198AD3FA00B854AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8C99198AD3FA00B854AB /* main.m */; };
@@ -20,6 +32,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		DA7C1024198FA16100F6D52C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA7C101D198FA16100F6D52C /* GTL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F38F6A60B66E91D00B24B81;
+			remoteInfo = GTLFramework;
+		};
+		DA7C1026198FA16100F6D52C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA7C101D198FA16100F6D52C /* GTL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F12027C11A4CA2F00BEB470;
+			remoteInfo = GTLTouchStaticLib;
+		};
+		DA7C1028198FA16100F6D52C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA7C101D198FA16100F6D52C /* GTL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F12027D11A4CA2F00BEB470;
+			remoteInfo = GTLUnitTests;
+		};
+		DA7C102A198FA16100F6D52C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA7C101D198FA16100F6D52C /* GTL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1AD9020B71603F00DC0485;
+			remoteInfo = DevelopmentTestTool;
+		};
 		DAFB8CB1198AD3FB00B854AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DAFB8C8C198AD3F900B854AB /* Project object */;
@@ -30,6 +70,53 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DA31DBEF198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GTMOAuth2ViewTouch.xib; path = GTM/OAuth2/Touch/GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
+		DA7C0FB2198F997600F6D52C /* GTLBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBase64.h; sourceTree = "<group>"; };
+		DA7C0FB3198F997600F6D52C /* GTLBatchQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBatchQuery.h; sourceTree = "<group>"; };
+		DA7C0FB4198F997600F6D52C /* GTLBatchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBatchResult.h; sourceTree = "<group>"; };
+		DA7C0FB5198F997700F6D52C /* GTLDateTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLDateTime.h; sourceTree = "<group>"; };
+		DA7C0FB6198F997700F6D52C /* GTLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLDefines.h; sourceTree = "<group>"; };
+		DA7C0FB7198F997700F6D52C /* GTLErrorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLErrorObject.h; sourceTree = "<group>"; };
+		DA7C0FB8198F997700F6D52C /* GTLFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLFramework.h; sourceTree = "<group>"; };
+		DA7C0FB9198F997700F6D52C /* GTLJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLJSONParser.h; sourceTree = "<group>"; };
+		DA7C0FBA198F997700F6D52C /* GTLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLObject.h; sourceTree = "<group>"; };
+		DA7C0FBB198F997700F6D52C /* GTLQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLQuery.h; sourceTree = "<group>"; };
+		DA7C0FBC198F997700F6D52C /* GTLRuntimeCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLRuntimeCommon.h; sourceTree = "<group>"; };
+		DA7C0FBD198F997700F6D52C /* GTLService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLService.h; sourceTree = "<group>"; };
+		DA7C0FBE198F997700F6D52C /* GTLTargetNamespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLTargetNamespace.h; sourceTree = "<group>"; };
+		DA7C0FBF198F997700F6D52C /* GTLUploadParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLUploadParameters.h; sourceTree = "<group>"; };
+		DA7C0FC0198F997700F6D52C /* GTLUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLUtilities.h; sourceTree = "<group>"; };
+		DA7C0FC1198F997700F6D52C /* GTMGatherInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGatherInputStream.h; sourceTree = "<group>"; };
+		DA7C0FC2198F997700F6D52C /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
+		DA7C0FC3198F997700F6D52C /* GTMHTTPFetcherLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcherLogging.h; sourceTree = "<group>"; };
+		DA7C0FC4198F997700F6D52C /* GTMHTTPFetcherService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcherService.h; sourceTree = "<group>"; };
+		DA7C0FC5198F997700F6D52C /* GTMHTTPFetchHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetchHistory.h; sourceTree = "<group>"; };
+		DA7C0FC6198F997700F6D52C /* GTMHTTPUploadFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPUploadFetcher.h; sourceTree = "<group>"; };
+		DA7C0FC7198F997700F6D52C /* GTMMIMEDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMMIMEDocument.h; sourceTree = "<group>"; };
+		DA7C0FC8198F997700F6D52C /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2Authentication.h; sourceTree = "<group>"; };
+		DA7C0FC9198F997700F6D52C /* GTMOAuth2SignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2SignIn.h; sourceTree = "<group>"; };
+		DA7C0FCA198F997700F6D52C /* GTMOAuth2ViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2ViewControllerTouch.h; sourceTree = "<group>"; };
+		DA7C0FCB198F997700F6D52C /* GTMOAuth2WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2WindowController.h; sourceTree = "<group>"; };
+		DA7C0FCC198F997700F6D52C /* GTMReadMonitorInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMReadMonitorInputStream.h; sourceTree = "<group>"; };
+		DA7C1004198F9A8300F6D52C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DA7C1006198F9A8A00F6D52C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DA7C101D198FA16100F6D52C /* GTL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GTL.xcodeproj; path = GTM/GTL.xcodeproj; sourceTree = "<group>"; };
+		DA7C102D198FA1B600F6D52C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		DA7C1030198FA2B700F6D52C /* GTLQueryTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLQueryTasks.h; sourceTree = "<group>"; };
+		DA7C1031198FA2B700F6D52C /* GTLQueryTasks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLQueryTasks.m; sourceTree = "<group>"; };
+		DA7C1032198FA2B700F6D52C /* GTLServiceTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLServiceTasks.h; sourceTree = "<group>"; };
+		DA7C1033198FA2B700F6D52C /* GTLServiceTasks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLServiceTasks.m; sourceTree = "<group>"; };
+		DA7C1034198FA2B700F6D52C /* GTLTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLTasks.h; sourceTree = "<group>"; };
+		DA7C1035198FA2B700F6D52C /* GTLTasksConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLTasksConstants.h; sourceTree = "<group>"; };
+		DA7C1036198FA2B700F6D52C /* GTLTasksConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLTasksConstants.m; sourceTree = "<group>"; };
+		DA7C1037198FA2B700F6D52C /* GTLTasksTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLTasksTask.h; sourceTree = "<group>"; };
+		DA7C1038198FA2B700F6D52C /* GTLTasksTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLTasksTask.m; sourceTree = "<group>"; };
+		DA7C1039198FA2B700F6D52C /* GTLTasksTaskList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLTasksTaskList.h; sourceTree = "<group>"; };
+		DA7C103A198FA2B700F6D52C /* GTLTasksTaskList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLTasksTaskList.m; sourceTree = "<group>"; };
+		DA7C103B198FA2B700F6D52C /* GTLTasksTaskLists.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLTasksTaskLists.h; sourceTree = "<group>"; };
+		DA7C103C198FA2B700F6D52C /* GTLTasksTaskLists.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLTasksTaskLists.m; sourceTree = "<group>"; };
+		DA7C103D198FA2B700F6D52C /* GTLTasksTasks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLTasksTasks.h; sourceTree = "<group>"; };
+		DA7C103E198FA2B700F6D52C /* GTLTasksTasks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLTasksTasks.m; sourceTree = "<group>"; };
 		DACA8D0D198B055D002E4EC9 /* TaskListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskListViewController.m; sourceTree = "<group>"; };
 		DACA8D0F198B057E002E4EC9 /* TaskListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaskListViewController.h; sourceTree = "<group>"; };
 		DAD6E143198C2EF600CC9B1C /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
@@ -56,6 +143,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA7C102E198FA1B600F6D52C /* SystemConfiguration.framework in Frameworks */,
+				DA7C102C198FA17600F6D52C /* libGTLTouchStaticLib.a in Frameworks */,
+				DA7C1009198F9AC700F6D52C /* CoreData.framework in Frameworks */,
+				DA7C100A198F9AC700F6D52C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,10 +160,102 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA7C0F74198F935000F6D52C /* GTLTouchStaticLib */ = {
+			isa = PBXGroup;
+			children = (
+				DA31DBEF198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib */,
+				DA7C102F198FA2B700F6D52C /* Tasks */,
+				DA7C0FB1198F997600F6D52C /* Headers */,
+			);
+			name = GTLTouchStaticLib;
+			sourceTree = "<group>";
+		};
+		DA7C0FB1198F997600F6D52C /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				DA7C0FB2198F997600F6D52C /* GTLBase64.h */,
+				DA7C0FB3198F997600F6D52C /* GTLBatchQuery.h */,
+				DA7C0FB4198F997600F6D52C /* GTLBatchResult.h */,
+				DA7C0FB5198F997700F6D52C /* GTLDateTime.h */,
+				DA7C0FB6198F997700F6D52C /* GTLDefines.h */,
+				DA7C0FB7198F997700F6D52C /* GTLErrorObject.h */,
+				DA7C0FB8198F997700F6D52C /* GTLFramework.h */,
+				DA7C0FB9198F997700F6D52C /* GTLJSONParser.h */,
+				DA7C0FBA198F997700F6D52C /* GTLObject.h */,
+				DA7C0FBB198F997700F6D52C /* GTLQuery.h */,
+				DA7C0FBC198F997700F6D52C /* GTLRuntimeCommon.h */,
+				DA7C0FBD198F997700F6D52C /* GTLService.h */,
+				DA7C0FBE198F997700F6D52C /* GTLTargetNamespace.h */,
+				DA7C0FBF198F997700F6D52C /* GTLUploadParameters.h */,
+				DA7C0FC0198F997700F6D52C /* GTLUtilities.h */,
+				DA7C0FC1198F997700F6D52C /* GTMGatherInputStream.h */,
+				DA7C0FC2198F997700F6D52C /* GTMHTTPFetcher.h */,
+				DA7C0FC3198F997700F6D52C /* GTMHTTPFetcherLogging.h */,
+				DA7C0FC4198F997700F6D52C /* GTMHTTPFetcherService.h */,
+				DA7C0FC5198F997700F6D52C /* GTMHTTPFetchHistory.h */,
+				DA7C0FC6198F997700F6D52C /* GTMHTTPUploadFetcher.h */,
+				DA7C0FC7198F997700F6D52C /* GTMMIMEDocument.h */,
+				DA7C0FC8198F997700F6D52C /* GTMOAuth2Authentication.h */,
+				DA7C0FC9198F997700F6D52C /* GTMOAuth2SignIn.h */,
+				DA7C0FCA198F997700F6D52C /* GTMOAuth2ViewControllerTouch.h */,
+				DA7C0FCB198F997700F6D52C /* GTMOAuth2WindowController.h */,
+				DA7C0FCC198F997700F6D52C /* GTMReadMonitorInputStream.h */,
+			);
+			name = Headers;
+			path = Google/Headers;
+			sourceTree = "<group>";
+		};
+		DA7C1008198F9AB700F6D52C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DA7C102D198FA1B600F6D52C /* SystemConfiguration.framework */,
+				DA7C1006198F9A8A00F6D52C /* CoreData.framework */,
+				DA7C1004198F9A8300F6D52C /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DA7C101E198FA16100F6D52C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA7C1025198FA16100F6D52C /* GTL.framework */,
+				DA7C1027198FA16100F6D52C /* libGTLTouchStaticLib.a */,
+				DA7C1029198FA16100F6D52C /* GTLUnitTests.xctest */,
+				DA7C102B198FA16100F6D52C /* DevelopmentTestTool */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DA7C102F198FA2B700F6D52C /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				DA7C1030198FA2B700F6D52C /* GTLQueryTasks.h */,
+				DA7C1031198FA2B700F6D52C /* GTLQueryTasks.m */,
+				DA7C1032198FA2B700F6D52C /* GTLServiceTasks.h */,
+				DA7C1033198FA2B700F6D52C /* GTLServiceTasks.m */,
+				DA7C1034198FA2B700F6D52C /* GTLTasks.h */,
+				DA7C1035198FA2B700F6D52C /* GTLTasksConstants.h */,
+				DA7C1036198FA2B700F6D52C /* GTLTasksConstants.m */,
+				DA7C1037198FA2B700F6D52C /* GTLTasksTask.h */,
+				DA7C1038198FA2B700F6D52C /* GTLTasksTask.m */,
+				DA7C1039198FA2B700F6D52C /* GTLTasksTaskList.h */,
+				DA7C103A198FA2B700F6D52C /* GTLTasksTaskList.m */,
+				DA7C103B198FA2B700F6D52C /* GTLTasksTaskLists.h */,
+				DA7C103C198FA2B700F6D52C /* GTLTasksTaskLists.m */,
+				DA7C103D198FA2B700F6D52C /* GTLTasksTasks.h */,
+				DA7C103E198FA2B700F6D52C /* GTLTasksTasks.m */,
+			);
+			name = Tasks;
+			path = Google/Tasks;
+			sourceTree = "<group>";
+		};
 		DAFB8C8B198AD3F900B854AB = {
 			isa = PBXGroup;
 			children = (
+				DA7C101D198FA16100F6D52C /* GTL.xcodeproj */,
 				DAFB8C96198AD3F900B854AB /* Tasks */,
+				DA7C0F74198F935000F6D52C /* GTLTouchStaticLib */,
+				DA7C1008198F9AB700F6D52C /* Frameworks */,
 				DAFB8CB3198AD3FB00B854AB /* TasksTests */,
 				DAFB8C95198AD3F900B854AB /* Products */,
 			);
@@ -201,6 +384,12 @@
 			mainGroup = DAFB8C8B198AD3F900B854AB;
 			productRefGroup = DAFB8C95198AD3F900B854AB /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DA7C101E198FA16100F6D52C /* Products */;
+					ProjectRef = DA7C101D198FA16100F6D52C /* GTL.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				DAFB8C93198AD3F900B854AB /* Tasks */,
@@ -209,11 +398,43 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		DA7C1025198FA16100F6D52C /* GTL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GTL.framework;
+			remoteRef = DA7C1024198FA16100F6D52C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DA7C1027198FA16100F6D52C /* libGTLTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGTLTouchStaticLib.a;
+			remoteRef = DA7C1026198FA16100F6D52C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DA7C1029198FA16100F6D52C /* GTLUnitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GTLUnitTests.xctest;
+			remoteRef = DA7C1028198FA16100F6D52C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DA7C102B198FA16100F6D52C /* DevelopmentTestTool */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = DevelopmentTestTool;
+			remoteRef = DA7C102A198FA16100F6D52C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		DAFB8C92198AD3F900B854AB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA31DBF0198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib in Resources */,
 				DAFB8CA9198AD3FA00B854AB /* Main.storyboard in Resources */,
 				DAFB8CAB198AD3FA00B854AB /* Images.xcassets in Resources */,
 			);
@@ -234,10 +455,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAFB8CA6198AD3FA00B854AB /* DetailViewController.m in Sources */,
+				DA7C1045198FA2B700F6D52C /* GTLTasksTasks.m in Sources */,
 				DAD6E144198C2EF600CC9B1C /* NSString+UUID.m in Sources */,
 				DACA8D0E198B055D002E4EC9 /* TaskListViewController.m in Sources */,
+				DA7C1044198FA2B700F6D52C /* GTLTasksTaskLists.m in Sources */,
 				DAFB8CA3198AD3FA00B854AB /* MasterViewController.m in Sources */,
 				DAFB8C9D198AD3FA00B854AB /* AppDelegate.m in Sources */,
+				DA7C1043198FA2B700F6D52C /* GTLTasksTaskList.m in Sources */,
+				DA7C1042198FA2B700F6D52C /* GTLTasksTask.m in Sources */,
+				DA7C1040198FA2B700F6D52C /* GTLServiceTasks.m in Sources */,
+				DA7C1041198FA2B700F6D52C /* GTLTasksConstants.m in Sources */,
+				DA7C103F198FA2B700F6D52C /* GTLQueryTasks.m in Sources */,
 				DAFB8C9A198AD3FA00B854AB /* main.m in Sources */,
 				DAFB8CA0198AD3FA00B854AB /* Tasks.xcdatamodeld in Sources */,
 			);
@@ -357,7 +585,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Tasks/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Google",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -368,7 +602,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Tasks/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Google",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
