@@ -96,6 +96,7 @@
                             forKey:@"id"];
         [newManagedObject setValue:title forKey:@"title"];
         [newManagedObject setValue:[NSDate date] forKey:@"updated_at"];
+        [newManagedObject setValue:[NSNumber numberWithBool:NO] forKey:@"trashed"];
         
         // Save the context.
         NSError *error = nil;
@@ -114,7 +115,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        [(DetailViewController *)[segue destinationViewController] setDetailItem:object];
+        [(DetailViewController *)[segue destinationViewController] setTask:object];
     } else if ([[segue identifier] isEqualToString:@"show"]) {
         [(TaskListViewController *)[segue destinationViewController] setList:object];
         [(TaskListViewController *)[segue destinationViewController] setManagedObjectContext:self.managedObjectContext];
@@ -146,8 +147,13 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-            
+
+        [[self.fetchedResultsController objectAtIndexPath:indexPath]
+         setValue:[NSNumber numberWithBool:YES]
+         forKey:@"trashed"];
+        
+//        [NSFetchedResultsController deleteCacheWithName:@"TaskLists"];
+
         NSError *error = nil;
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
@@ -204,6 +210,9 @@
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    [fetchRequest
+     setPredicate:[NSPredicate predicateWithFormat:@"trashed == NO"]];
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".

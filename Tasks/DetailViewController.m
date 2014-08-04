@@ -9,8 +9,6 @@
 #import "DetailViewController.h"
 
 @interface DetailViewController ()
-            
-@property (strong, nonatomic) UIPopoverController *masterPopoverController;
 
 @end
 
@@ -18,23 +16,22 @@
             
 #pragma mark - Managing the detail item
 
-- (void)setDetailItem:(id)newDetailItem {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
+- (void)setTask:(id)newTask {
+    if (_task != newTask) {
+        _task = newTask;
             
         // Update the view.
         [self configureView];
     }
 
-    if (self.masterPopoverController != nil) {
-        [self.masterPopoverController dismissPopoverAnimated:YES];
-    }
 }
 
 - (void)configureView {
     // Update the user interface for the detail item.
-    if (self.detailItem) {
-        self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"updated_at"] description];
+    if (self.task) {
+        self.taskTitle.text = self.taskTitle.placeholder = [self.task valueForKey:@"title"];
+        self.taskCompleted.on = ([self.task valueForKey:@"completed_at"] != nil);
+        self.taskNotes.text = [self.task valueForKey:@"notes"];
     }
 }
 
@@ -53,7 +50,42 @@
 }
 
 - (void)saveAndDissmis:(id)sender {
-    [self.parentViewController dismissViewControllerAnimated:YES completion:NULL];
+
+    if([[self.taskTitle text] respondsToSelector:@selector(isEqualToString:)] && ![[[self.taskTitle text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
+        [self.task
+         setValue:[self.taskTitle text]
+         forKey:@"title"];
+    }
+
+    [self.task
+     setValue:[self.taskNotes text]
+     forKey:@"notes"];
+
+    if ([self.taskCompleted isOn] && [self.task valueForKey:@"completed_at"] == nil) {
+        [self.task setValue:[NSDate date] forKey:@"completed_at"];
+    } else if(![self.taskCompleted isOn]) {
+        [self.task setValue:nil forKey:@"completed_at"];
+    }
+    
+    NSError *error = nil;
+    if ([[self.fetchedResultsController managedObjectContext] save:&error]) {
+        [self.parentViewController dismissViewControllerAnimated:YES completion:NULL];
+    } else {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
+- (void)deleteTaskAndDissmis:(id)sender {
+    [[self.task valueForKey:@"list"]
+     setValue:[NSDate date]
+     forKey:@"updated_at"];
+    
+    [self.task setValue:[NSNumber numberWithBool:YES] forKey:@"trashed"];
+//    [NSFetchedResultsController deleteCacheWithName:[@"Tasks_" stringByAppendingString:[[self.task valueForKey:@"list"] valueForKey:@"id"]]];
+    [self saveAndDissmis:sender];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,25 +93,29 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Split view
 
-- (void)splitViewController:(UISplitViewController *)splitController willHideViewController:(UIViewController *)viewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)popoverController
-{
-    barButtonItem.title = NSLocalizedString(@"Task Lists", @"Task Lists");
-    [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-    self.masterPopoverController = popoverController;
+#pragma mark - Table View
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setSelected:NO];
+    
+    if(cell.tag == 410) {
+        [[[UIAlertView alloc]
+          initWithTitle:@"Delete ?"
+          message:@"Are you sure you want to delete this task ?"
+          delegate:self
+          cancelButtonTitle:@"No!!!"
+          otherButtonTitles:@"Yup!", nil] show];
+    }
 }
 
-- (void)splitViewController:(UISplitViewController *)splitController willShowViewController:(UIViewController *)viewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
-{
-    // Called when the view is shown again in the split view, invalidating the button and popover controller.
-    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
-    self.masterPopoverController = nil;
-}
+#pragma mark - Alert View
 
-- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
-    // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-    return YES;
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != alertView.cancelButtonIndex)
+        [self deleteTaskAndDissmis:self];
 }
 
 @end

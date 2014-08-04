@@ -9,7 +9,7 @@
 #import "TaskListViewController.h"
 #import "NSString+UUID.h"
 
-//#import "TaskDetailsViewController.h"
+#import "DetailViewController.h"
 
 @interface TaskListViewController ()
 
@@ -89,16 +89,16 @@
 }
 
 - (void)insertNewObject:(id)sender {
-    UIAlertView *newTaskList = [[UIAlertView alloc]
+    UIAlertView *newTask = [[UIAlertView alloc]
                                 initWithTitle:@"New Task"
                                 message:@""
                                 delegate:self
                                 cancelButtonTitle:@"Cancel"
                                 otherButtonTitles:@"Create", nil];
-    newTaskList.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [[newTaskList textFieldAtIndex:0] setPlaceholder:@"A task"];
-    newTaskList.tag = 202;
-    [newTaskList show];
+    newTask.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [[newTask textFieldAtIndex:0] setPlaceholder:@"A task"];
+    newTask.tag = 202;
+    [newTask show];
 }
 
 - (void)createTask:(NSString *)name {
@@ -125,6 +125,7 @@
         [newManagedObject setValue:name forKey:@"title"];
         [newManagedObject setValue:self.list forKey:@"list"];
         [newManagedObject setValue:[NSDate date] forKey:@"updated_at"];
+        [newManagedObject setValue:[NSNumber numberWithBool:NO] forKey:@"trashed"];
         [self.list setValue:[NSDate date] forKey:@"updated_at"];
         
         // Save the context.
@@ -142,9 +143,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-//        [(DetailViewController *)[[segue destinationViewController] topViewController] setDetailItem:object];
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        DetailViewController *details = (DetailViewController *)[[segue destinationViewController] topViewController];
+        [details setTask:object];
+        [details setFetchedResultsController:self.fetchedResultsController];
     }
 }
 
@@ -173,7 +176,16 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+        [[object valueForKey:@"list"]
+         setValue:[NSDate date]
+         forKey:@"updated_at"];
+        [object
+         setValue:[NSNumber numberWithBool:YES]
+         forKey:@"trashed"];
+        
+//        [NSFetchedResultsController deleteCacheWithName:[@"Tasks_" stringByAppendingString:[self.list valueForKey:@"id"]]];
         
         NSError *error = nil;
         if (![context save:&error]) {
@@ -231,7 +243,8 @@
         NSArray *sortDescriptors = @[sortDescriptor];
         
         [fetchRequest setSortDescriptors:sortDescriptors];
-        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"list == %@", self.list]];
+        [fetchRequest setPredicate:[NSPredicate
+                                    predicateWithFormat:@"list.id == %@ AND trashed == FALSE", [self.list valueForKey:@"id"]]];
         
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
@@ -287,7 +300,11 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            if ([[anObject valueForKey:@"trashed"] boolValue]) {
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            } else {
+                [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            }
             break;
             
         case NSFetchedResultsChangeMove:
