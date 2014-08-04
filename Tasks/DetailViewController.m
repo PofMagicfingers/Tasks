@@ -51,21 +51,31 @@
 
 - (void)saveAndDissmis:(id)sender {
 
-    if([[self.taskTitle text] respondsToSelector:@selector(isEqualToString:)] && ![[[self.taskTitle text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
+    if([[self.taskTitle text] respondsToSelector:@selector(isEqualToString:)] && ![[[self.taskTitle text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""] && ![[self.task valueForKey:@"title"] isEqualToString:[self.taskTitle text]]) {
         [self.task
          setValue:[self.taskTitle text]
          forKey:@"title"];
     }
 
-    [self.task
-     setValue:[self.taskNotes text]
-     forKey:@"notes"];
+    if (![[self.task valueForKey:@"notes"] isEqualToString:[self.taskNotes text]]) {
+        [self.task
+         setValue:[self.taskNotes text]
+         forKey:@"notes"];
+    }
 
     if ([self.taskCompleted isOn] && [self.task valueForKey:@"completed_at"] == nil) {
         [self.task setValue:[NSDate date] forKey:@"completed_at"];
-    } else if(![self.taskCompleted isOn]) {
+    } else if(![self.taskCompleted isOn] && [self.task valueForKey:@"completed_at"] != nil) {
         [self.task setValue:nil forKey:@"completed_at"];
     }
+    
+    if ([self.task hasChanges]) {
+        [self.task setValue:[NSDate date] forKey:@"updated_at"];
+        [[self.task valueForKey:@"list"]
+         setValue:[self.task valueForKey:@"updated_at"]
+         forKey:@"updated_at"];
+    }
+    
     
     NSError *error = nil;
     if ([[self.fetchedResultsController managedObjectContext] save:&error]) {
