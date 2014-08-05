@@ -210,23 +210,18 @@ int const kDefaultSyncIntervalSec = 300;
                     } else if (localTaskList.trashed.boolValue) {
                         [self removeTaskListFromServer:localTaskList];
                         shouldProcessTasksForTaskList = NO;
-                        
                     } else {
-                        NSDate *localSyncDate = localTaskList.synced_at;
                         NSDate *localModDate = localTaskList.updated_at;
-                        if (![localSyncDate isEqualToDate:localModDate]) {
-                            if ([localSyncDate isEqualToDate:serverModDate]) {
+
+                        if (serverModDate > localTaskList.synced_at ||
+                            localModDate > localTaskList.synced_at) {
+                            if (serverModDate > localModDate) {
+                                [self.taskManager updateTaskList:serverTaskList];
+                            } else if (localModDate > serverModDate) {
                                 [self updateTaskListOnServer:localTaskList];
-                            } else {
-#pragma mark TODO: Resolve conflict
                             }
-                            
-                        } else if (![localSyncDate isEqualToDate:serverModDate]) {
-                            [self.taskManager updateTaskList:serverTaskList];
-                            
                         } else {
                             shouldProcessTasksForTaskList = NO;
-                            
                         }
                         
                     }
@@ -249,7 +244,7 @@ int const kDefaultSyncIntervalSec = 300;
                 }
             }
         }
-        
+        [NSFetchedResultsController deleteCacheWithName:nil];
     }];
 }
 
@@ -339,8 +334,8 @@ int const kDefaultSyncIntervalSec = 300;
     
     GTLQueryTasks *query = [GTLQueryTasks queryForTasksListWithTasklist:serverTaskList.identifier];
     query.showCompleted = YES;
-    query.showHidden = YES;
-    query.showDeleted = YES;
+    query.showHidden = NO;
+    query.showDeleted = NO;
     query.maxResults = 2000;
     
     NSLog(@"Fetching tasks for tasklist (%@), query.maxResults=%lld", serverTaskList.identifier, query.maxResults);
@@ -349,9 +344,9 @@ int const kDefaultSyncIntervalSec = 300;
                                                  id serverTasks, NSError *error) {
         
         if (error) {
-#pragma mark TODO: Present error
+            NSLog(@"%@", error);
         } else {
-            NSMutableOrderedSet *localTasks = [NSMutableOrderedSet orderedSetWithOrderedSet:[self.taskManager taskListWithId:serverTaskList.identifier].tasks];
+            NSMutableOrderedSet *localTasks = [NSMutableOrderedSet orderedSetWithSet:[self.taskManager taskListWithId:serverTaskList.identifier].tasks];
             
             int processedCount = 0;
             int addedCount = 0;
@@ -359,21 +354,20 @@ int const kDefaultSyncIntervalSec = 300;
                 
                 Task *localTask = [self.taskManager taskWithId:serverTask.identifier];
                 if (localTask == nil) {
+                    if([serverTask.title respondsToSelector:@selector(isEqualToString:)] &&
+                       ![[serverTask.title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""])
                     [self.taskManager addTask:serverTask toList:serverTaskList.identifier];
                     addedCount++;
-                    
                 } else {
                     NSDate *serverModDate = serverTask.updated.date;
                     NSDate *localModDate = localTask.updated_at;
-                    NSDate *localSyncDate = localTask.synced_at;
-                    if (![localModDate isEqualToDate:localSyncDate]) {
-                        if ([localSyncDate isEqualToDate:serverModDate]) {
+                    if (localModDate > localTask.synced_at ||
+                        serverModDate > localTask.synced_at) {
+                        if (localModDate > serverModDate) {
                             [self updateTaskOnServer:localTask];
-                        } else {
-# pragma mark TODO: Resolve sync conflict
+                        } else if (serverModDate > localModDate) {
+                            [self.taskManager updateTask:serverTask];
                         }
-                    } else if (![localSyncDate isEqualToDate:serverModDate]) {
-                        [self.taskManager updateTask:serverTask];
                     }
                     
                     [localTasks removeObject:localTask];
@@ -386,7 +380,11 @@ int const kDefaultSyncIntervalSec = 300;
             
             if (localTasks.count > 0) {
                 for (Task *task in localTasks) {
-                    [self addTaskToServer:task];
+                    if ([task isNew]) {
+                        [self addTaskToServer:task];
+                    } else {
+                        [self.taskManager removeTask:task];
+                    }
                 }
             }
         }

@@ -358,7 +358,7 @@ static NSMutableDictionary *gCalendarsForTimeZones = nil;
         sign, (long)(offset/(60*60)) % 24, (long)(offset / 60) % 60];
     }
 
-    NSString *fractionalSecondsString = @"";
+    NSString *fractionalSecondsString = @".00";
     if (self.milliseconds > 0.0) {
       fractionalSecondsString = [NSString stringWithFormat:@".%03ld", (long)self.milliseconds];
     }
@@ -368,7 +368,7 @@ static NSMutableDictionary *gCalendarsForTimeZones = nil;
       (long)[dateComponents second], fractionalSecondsString, timeOffsetString];
   }
 
-  // full dateString like "2006-11-17T15:10:46-08:00"
+  // full dateString like "2006-11-17T15:10:46.00-08:00"
   NSString *dateString = [NSString stringWithFormat:@"%04ld-%02ld-%02ld%@",
     (long)[dateComponents year], (long)[dateComponents month],
     (long)[dateComponents day], timeString];

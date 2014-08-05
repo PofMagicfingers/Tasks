@@ -46,10 +46,9 @@
 - (Task *)newTaskWithTitle:(NSString *)title
                 inTaskList:(TaskList *)taskList;
 - (Task *)newTaskWithTitle:(NSString *)title
-                inTaskList:(TaskList *)taskList;
-- (Task *)newTaskWithTitle:(NSString *)title
                   andNotes:(NSString *)notes
                 inTaskList:(TaskList *)taskList;
+- (void)removeTask:(Task *)localTask;         // Removes the specified task
 
 #pragma mark - Server task methods
 
@@ -63,7 +62,6 @@
 #pragma mark - Utility methods
 
 - (void)saveContext;                                                        // Saves changes made in the current ManagedObjectContext
-- (void)presentError:(NSError *)error;                                      // Presents a standard error to user
 
 #pragma mark - CoreData Stack
 

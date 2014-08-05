@@ -25,8 +25,20 @@
 @dynamic list;
 @dynamic parent;
 
+- (NSDate *)synced_at {
+    [self willAccessValueForKey:@"synced_at"];
+    NSDate *_synced_at = [self primitiveValueForKey:@"synced_at"];
+    [self didAccessValueForKey:@"synced_at"];
+    
+    if (![_synced_at isKindOfClass:[NSDate class]]) {
+        return [NSDate dateWithTimeIntervalSince1970:0];
+    } else {
+        return _synced_at;
+    }
+}
+
 - (BOOL)isNew {
-    return [self.identifier hasPrefix:@"local_"];
+    return [self.identifier hasPrefix:@"local_"] && ![self.trashed boolValue];
 }
 
 - (GTLTasksTask *)convertToGTLTasksTask {

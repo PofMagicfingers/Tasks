@@ -12,6 +12,7 @@
 #import "NSString+UUID.h"
 
 #import "AppDelegate.h"
+#import "GTSyncManager.h"
 
 @interface MasterViewController ()
 
@@ -41,6 +42,7 @@
 
 - (void)updateToolbar {
     if ([[self appDelegate] googleIsSignedIn]) {
+        [GTSyncManager startSyncing];
         self.toolbarItems = [NSArray arrayWithObjects:
                              [[UIBarButtonItem alloc]
                               initWithTitle:@"Sync"
@@ -81,7 +83,7 @@
                               otherButtonTitles:nil] show];
         } else {
             [self updateToolbar];
-            NSLog(@"auth : %@", auth);
+            [[GTSyncManager sharedInstance].tasksService setAuthorizer:auth];
             [self syncWithGoogle:self];
         }
     }];
@@ -94,11 +96,7 @@
 
 - (void)syncWithGoogle:(id)sender {
     if([[self appDelegate] googleIsSignedIn]) {
-        [[[UIAlertView alloc] initWithTitle:@"Sync here"
-                                    message:@"will sync when implemented"
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
+        [GTSyncManager syncNow];
     }
 }
 

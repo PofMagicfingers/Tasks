@@ -15,7 +15,6 @@
 #import "GTSyncManager.h"
 
 @interface LocalTaskManager ()
-- (void)presentError:(NSError *)error;
 @end
 
 @implementation LocalTaskManager
@@ -30,7 +29,7 @@
 	[fetchRequest setEntity:[NSEntityDescription entityForName:@"TaskList" inManagedObjectContext:self.managedObjectContext]];
     NSArray *managedTaskLists = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        [self presentError:error];
+        NSLog(@"%@", error);
         return nil;
     }
     return managedTaskLists;
@@ -45,7 +44,7 @@
 	NSError *error = nil;
     NSArray *managedTaskLists = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
-        [self presentError:error];
+        NSLog(@"%@", error);
     } else if (managedTaskLists.count == 1) {
         return [managedTaskLists objectAtIndex:0];
     }
@@ -78,9 +77,9 @@
 - (void)updateManagedTaskList:(TaskList *)managedTaskList withServerTaskList:(GTLTasksTaskList *)serverTaskList {
     managedTaskList.etag = serverTaskList.ETag;
     managedTaskList.identifier = serverTaskList.identifier;
-    managedTaskList.synced_at = serverTaskList.updated.date;
     managedTaskList.title = serverTaskList.title;
-    managedTaskList.updated_at = serverTaskList.updated.date;
+    managedTaskList.updated_at = managedTaskList.synced_at = serverTaskList.updated.date;
+    managedTaskList.trashed = [NSNumber numberWithBool:NO];
     [self saveContext];
 }
 
@@ -121,7 +120,7 @@
     NSArray *managedTaskObjs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
     if (error) {
-        [self presentError:error];
+        NSLog(@"%@", error);
     } else if (managedTaskObjs.count > 0) {
         return [managedTaskObjs objectAtIndex:0];
     }
@@ -157,17 +156,23 @@
     
 }
 
+- (void)removeTask:(TaskList *)localTask {
+    if (localTask) {
+        [self.managedObjectContext deleteObject:localTask];
+        [self saveContext];
+    }
+}
+
 #pragma mark - Server task methods
 
 - (void)updateManagedTask:(Task *)managedTask withServerTask:(GTLTasksTask *)serverTask {
     managedTask.completed_at = serverTask.completed.date;
-    managedTask.trashed = [NSNumber numberWithBool:(serverTask.deleted == nil)];
+    managedTask.trashed = [NSNumber numberWithBool:(serverTask.deleted != nil && [serverTask.deleted boolValue])];
     managedTask.etag = serverTask.ETag;
     managedTask.identifier = serverTask.identifier;
     managedTask.notes = serverTask.notes;
-    managedTask.synced_at = serverTask.updated.date;
     managedTask.title = serverTask.title;
-    managedTask.updated_at = serverTask.updated.date;
+    managedTask.updated_at = managedTask.synced_at = serverTask.updated.date;
     
     NSString *parentTaskId = serverTask.parent;
     if (parentTaskId) {
@@ -194,65 +199,27 @@
     [self updateManagedTask:task withServerTask:serverTask];
 }
 
+#pragma mark - Core Data stack
 
-#pragma mark - Utility methods
-
-// Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
 - (void)saveContext {
-    
     [self.managedObjectContext performBlockAndWait:^{
         
         NSLog(@"Saving managedObjectContext");
         NSError *error = nil;
         NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
         if (managedObjectContext != nil) {
-            
-#if !TARGET_OS_IPHONE
-            if (![managedObjectContext commitEditing]) {
-                NSLog(@"Unable to commit editing before saving");
-            }
-#endif
-            
             if ([[self managedObjectContext] hasChanges] && ![[self managedObjectContext] save:&error]) {
                 NSLog(@"Unresolved error saving context: %@, %@", error, [error userInfo]);
-                [self presentError:error];
                 //            abort();
             }
         }
-        
-//        if (!error && managedObjectContext.parentContext) {
-//            [managedObjectContext.parentContext performBlock:^{
-//                
-//                NSError *err;
-//                if (![managedObjectContext.parentContext save:&err]) {
-//                    NSLog(@"Unresolved error saving parent context: %@, %@", err, [err userInfo]);
-//                    [self presentError:err];
-//                }
-//                
-//            }];
-//        }
-        
     }];
 }
 
-- (void)presentError:(NSError *)error {
-#if TARGET_OS_IPHONE
-#pragma mark TODO: Present error
-#else
-    [[NSApplication sharedApplication] presentError:error];
-#endif
-}
-
-
-#pragma mark - Core Data stack
 
 // Returns the directory the application uses to store the Core Data store file.
 + (NSURL *)applicationStoreDirectory {
-#if TARGET_OS_IPHONE
     return [(AppDelegate *)[UIApplication sharedApplication].delegate applicationDocumentsDirectory];
-#else
-    return [(AppDelegate *)[NSApplication sharedApplication].delegate applicationFilesDirectory];
-#endif
 }
 
 // Creates if necessary and returns the managed object model for the application.
@@ -263,7 +230,9 @@
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
         
-        NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"GTaskMaster" withExtension:@"momd"];
+        NSURL *modelURL = [[NSBundle mainBundle]
+                           URLForResource:@"Tasks"
+                           withExtension:@"momd"];
         _sharedManagedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
         
     });
@@ -279,14 +248,8 @@
     
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
-        
-#if TARGET_OS_IPHONE
         {
-            NSURL *storeURL = [[LocalTaskManager applicationStoreDirectory] URLByAppendingPathComponent:@"GTaskMaster.sqlite"];
-            
-#if (WIPE_LOCAL_TASKS_DB_ON_LAUNCH)
-            [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
-#endif
+            NSURL *storeURL = [[LocalTaskManager applicationStoreDirectory] URLByAppendingPathComponent:@"Tasks.sqlite"];
             
             NSError *error = nil;
             _sharedPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[LocalTaskManager sharedManagedObjectModel]];
@@ -294,7 +257,7 @@
                 /*
                  Replace this implementation with code to handle the error appropriately.
                  
-                 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+                 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                  
                  Typical reasons for an error here include:
                  * The persistent store is not accessible;
@@ -316,66 +279,10 @@
                  */
                 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
                 
-//                abort();
+                //                abort();
                 _sharedPersistentStoreCoordinator = nil;
             }
         }
-#else
-        {
-            NSManagedObjectModel *mom = [LocalTaskManager sharedManagedObjectModel];
-            if (mom) {
-                NSFileManager *fileManager = [NSFileManager defaultManager];
-                NSURL *applicationFilesDirectory = [LocalTaskManager applicationStoreDirectory];
-                NSError *error = nil;
-                
-                NSDictionary *properties = [applicationFilesDirectory resourceValuesForKeys:[NSArray arrayWithObject:NSURLIsDirectoryKey] error:&error];
-                
-                BOOL shouldInitPersistentStoreCoordinator = YES;
-                if (properties) {
-                    if (![[properties objectForKey:NSURLIsDirectoryKey] boolValue]) {
-                        // Customize and localize this error.
-                        NSString *failureDescription = [NSString stringWithFormat:@"Expected a folder to store application data, found a file (%@).", [applicationFilesDirectory path]];
-                        
-                        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-                        [dict setValue:failureDescription forKey:NSLocalizedDescriptionKey];
-                        error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:101 userInfo:dict];
-                        
-                        [[NSApplication sharedApplication] presentError:error];
-                        shouldInitPersistentStoreCoordinator = NO;
-                    }
-                } else {
-                    BOOL ok = NO;
-                    if ([error code] == NSFileReadNoSuchFileError) {
-                        ok = [fileManager createDirectoryAtPath:[applicationFilesDirectory path] withIntermediateDirectories:YES attributes:nil error:&error];
-                    }
-                    if (!ok) {
-                        [[NSApplication sharedApplication] presentError:error];
-                        shouldInitPersistentStoreCoordinator = NO;
-                    }
-                }
-                
-                if (shouldInitPersistentStoreCoordinator) {
-                    NSURL *url = [applicationFilesDirectory URLByAppendingPathComponent:@"GTaskMaster.storedata"];
-                    
-#if (WIPE_LOCAL_TASKS_DB_ON_LAUNCH)
-                    [fileManager removeItemAtURL:url error:nil];
-#endif
-                    
-                    NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-                    if ([coordinator addPersistentStoreWithType:NSXMLStoreType configuration:nil URL:url options:nil error:&error]) {
-                        _sharedPersistentStoreCoordinator = coordinator;
-                    } else {
-                        [[NSApplication sharedApplication] presentError:error];
-                    }
-                }
-                
-            } else {
-                NSLog(@"No model to generate a store from");
-                
-            }
-        }
-#endif
-        
     });
     
     return _sharedPersistentStoreCoordinator;
@@ -402,14 +309,7 @@
 // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
 - (NSManagedObjectContext *)managedObjectContext {
     if (!_managedObjectContext) {
-//        if (self.managedObjectContextConcurrencyType) {
-//            if (self.managedObjectContextConcurrencyType == NSMainQueueConcurrencyType) {
-                _managedObjectContext = [LocalTaskManager sharedManagedObjectContext];
-//            } else {
-//                _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:self.managedObjectContextConcurrencyType];
-//                [_managedObjectContext setParentContext:[LocalTaskManager sharedManagedObjectContext]];
-//            }
-//        }
+        _managedObjectContext = [LocalTaskManager sharedManagedObjectContext];
     }
     
     return _managedObjectContext;

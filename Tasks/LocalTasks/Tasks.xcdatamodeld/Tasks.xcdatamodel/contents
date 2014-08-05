@@ -27,6 +27,6 @@
     </entity>
     <elements>
         <element name="Task" positionX="495" positionY="-27" width="128" height="210"/>
-        <element name="TaskList" positionX="261" positionY="207" width="128" height="148"/>
+        <element name="TaskList" positionX="261" positionY="207" width="128" height="150"/>
     </elements>
 </model>
