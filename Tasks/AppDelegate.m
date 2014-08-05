@@ -26,6 +26,9 @@
 
     MasterViewController *controller = (MasterViewController *)masterNavigationController.topViewController;
     controller.managedObjectContext = self.managedObjectContext;
+
+    [self googleAutoSignIn];
+    
     return YES;
 }
 
@@ -53,20 +56,58 @@
     [self saveContext];
 }
 
+#pragma mark - Google OAuth
+
+- (void)googleAutoSignIn {
+    if (![self googleIsSignedIn]) {
+        _googleAuth = [GTMOAuth2ViewControllerTouch
+                       authForGoogleFromKeychainForName:kKeychainItemName
+                       clientID:kMyClientID
+                       clientSecret:kMyClientSecret];
+    }
+}
+
+- (void)googleSignIn:(void (^)(GTMOAuth2ViewControllerTouch *viewController, GTMOAuth2Authentication *auth, NSError *error))handler {
+    if(![self googleIsSignedIn]) {
+        // Show the OAuth 2 sign-in controller
+        GTMOAuth2ViewControllerTouch *authViewController;
+        authViewController = [GTMOAuth2ViewControllerTouch
+                              controllerWithScope:kGTLAuthScopeTasks
+                              clientID:kMyClientID
+                              clientSecret:kMyClientSecret
+                              keychainItemName:kKeychainItemName
+                              completionHandler:handler];
+        authViewController.hidesBottomBarWhenPushed = YES;
+        [(UINavigationController *)self.window.rootViewController pushViewController:authViewController animated:YES];
+
+    }
+}
+
+- (void)googleSignOut {
+    if ([self googleIsSignedIn]) {
+        [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:kKeychainItemName];
+        [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.googleAuth];
+    }
+}
+
+- (BOOL)googleIsSignedIn {
+    return (self.googleAuth && self.googleAuth.canAuthorize);
+}
+
+#pragma mark - Core Data stack
+
 - (void)saveContext {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-             // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
-        } 
+        }
     }
 }
-
-#pragma mark - Core Data stack
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.

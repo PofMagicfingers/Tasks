@@ -11,6 +11,8 @@
 #import "TaskListViewController.h"
 #import "NSString+UUID.h"
 
+#import "AppDelegate.h"
+
 #import "GTLTasks.h"
 #import "GTMOAuth2ViewControllerTouch.h"
 
@@ -46,22 +48,7 @@
 }
 
 - (void)connectGoogle:(id)sender {
-    GTMOAuth2ViewControllerTouch *controller = [[GTMOAuth2ViewControllerTouch alloc]
-                                                initWithScope:kGTLAuthScopeTasks
-                                                clientID:@"8662706613-hh2j6loit2ot6343oct9sjus3l3303lm.apps.googleusercontent.com"
-                                                clientSecret:@"BzzfnnyuaXM1Tc4-seXy8mYe"
-                                                keychainItemName:@"Tasks_GSync"
-                                                completionHandler:^(GTMOAuth2ViewControllerTouch *viewController,
-                                                                    GTMOAuth2Authentication *auth,
-                                                                    NSError *error) {
-                                                    if (error) {
-                                                        NSLog(@"Error authenticating user:\n   %@", error);
-                                                    } else {
-                                                        NSLog(@"OKay for user :\n   %@", auth);
-                                                    }
-                                                }];
-    controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
+    [(AppDelegate *)[UIApplication sharedApplication].delegate googleSignIn:NULL];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -119,7 +106,7 @@
         // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
         [newManagedObject setValue:[@"local_"
                                     stringByAppendingString:[NSString UUID]]
-                            forKey:@"id"];
+                            forKey:@"identifier"];
         [newManagedObject setValue:title forKey:@"title"];
         [newManagedObject setValue:[NSDate date] forKey:@"updated_at"];
         [newManagedObject setValue:[NSNumber numberWithBool:NO] forKey:@"trashed"];
@@ -195,7 +182,7 @@
 //
 //    TaskListViewController *taskList = [[TaskListViewController alloc] init];
 //    
-//    taskList.list = [object valueForKey:@"id"];
+//    taskList.list = [object valueForKey:@"identifier"];
 //    taskList.managedObjectContext = self.managedObjectContext;
 //    
 //    [self.navigationController pushViewController:taskList animated:YES];

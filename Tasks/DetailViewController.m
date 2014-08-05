@@ -94,7 +94,7 @@
      forKey:@"updated_at"];
     
     [self.task setValue:[NSNumber numberWithBool:YES] forKey:@"trashed"];
-//    [NSFetchedResultsController deleteCacheWithName:[@"Tasks_" stringByAppendingString:[[self.task valueForKey:@"list"] valueForKey:@"id"]]];
+//    [NSFetchedResultsController deleteCacheWithName:[@"Tasks_" stringByAppendingString:[[self.task valueForKey:@"list"] valueForKey:@"identifier"]]];
     [self saveAndDissmis:sender];
 }
 

@@ -121,7 +121,7 @@
         // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
         [newManagedObject setValue:[@"local_"
                                     stringByAppendingString:[NSString UUID]]
-                            forKey:@"id"];
+                            forKey:@"identifier"];
         [newManagedObject setValue:name forKey:@"title"];
         [newManagedObject setValue:self.list forKey:@"list"];
         [newManagedObject setValue:[NSDate date] forKey:@"updated_at"];
@@ -185,7 +185,7 @@
          setValue:[NSNumber numberWithBool:YES]
          forKey:@"trashed"];
         
-//        [NSFetchedResultsController deleteCacheWithName:[@"Tasks_" stringByAppendingString:[self.list valueForKey:@"id"]]];
+//        [NSFetchedResultsController deleteCacheWithName:[@"Tasks_" stringByAppendingString:[self.list valueForKey:@"identifier"]]];
         
         NSError *error = nil;
         if (![context save:&error]) {
@@ -229,7 +229,7 @@
         return _fetchedResultsController;
     }
     
-    if (self.list && [self.list valueForKey:@"id"]) {
+    if (self.list && [self.list valueForKey:@"identifier"]) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         // Edit the entity name as appropriate.
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Task" inManagedObjectContext:self.managedObjectContext];
@@ -244,11 +244,11 @@
         
         [fetchRequest setSortDescriptors:sortDescriptors];
         [fetchRequest setPredicate:[NSPredicate
-                                    predicateWithFormat:@"list.id == %@ AND trashed == FALSE", [self.list valueForKey:@"id"]]];
+                                    predicateWithFormat:@"list.identifier == %@ AND trashed == FALSE", [self.list valueForKey:@"identifier"]]];
         
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
-        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:[@"Tasks_" stringByAppendingString:[self.list valueForKey:@"id"]]];
+        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:[@"Tasks_" stringByAppendingString:[self.list valueForKey:@"identifier"]]];
         aFetchedResultsController.delegate = self;
         self.fetchedResultsController = aFetchedResultsController;
         

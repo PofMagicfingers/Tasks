@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6208.6" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Task">
+    <entity name="Task" representedClassName="Task">
         <attribute name="completed_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="etag" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="synced_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trashed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="updated_at" optional="YES" attributeType="Date">
@@ -15,17 +16,17 @@
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Task" inverseName="children_tasks" inverseEntity="Task" syncable="YES"/>
         <userInfo/>
     </entity>
-    <entity name="TaskList" syncable="YES">
+    <entity name="TaskList" representedClassName="TaskList" syncable="YES">
         <attribute name="etag" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="self_link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="synced_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trashed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="updated_at" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Task" inverseName="list" inverseEntity="Task" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Task" positionX="495" positionY="-27" width="128" height="195"/>
-        <element name="TaskList" positionX="261" positionY="207" width="128" height="150"/>
+        <element name="Task" positionX="495" positionY="-27" width="128" height="210"/>
+        <element name="TaskList" positionX="261" positionY="207" width="128" height="148"/>
     </elements>
 </model>

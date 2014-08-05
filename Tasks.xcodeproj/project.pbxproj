@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		DA31DBF0198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA31DBEF198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib */; };
+		DA31DBF81990727200F1E6EA /* GTSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DA31DBF71990727200F1E6EA /* GTSyncManager.m */; };
+		DA31DBFC1990748100F1E6EA /* TaskList.m in Sources */ = {isa = PBXBuildFile; fileRef = DA31DBFB1990748100F1E6EA /* TaskList.m */; };
+		DA31DBFF1990748200F1E6EA /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = DA31DBFE1990748200F1E6EA /* Task.m */; };
+		DA31DC02199074CB00F1E6EA /* Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DA31DC00199074CB00F1E6EA /* Tasks.xcdatamodeld */; };
+		DA31DC051990760E00F1E6EA /* LocalTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DA31DC041990760E00F1E6EA /* LocalTaskManager.m */; };
 		DA7C1009198F9AC700F6D52C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1006198F9A8A00F6D52C /* CoreData.framework */; };
 		DA7C100A198F9AC700F6D52C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1004198F9A8300F6D52C /* Foundation.framework */; };
 		DA7C102C198FA17600F6D52C /* libGTLTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1027198FA16100F6D52C /* libGTLTouchStaticLib.a */; };
@@ -23,7 +28,6 @@
 		DAD6E144198C2EF600CC9B1C /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD6E143198C2EF600CC9B1C /* NSString+UUID.m */; };
 		DAFB8C9A198AD3FA00B854AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8C99198AD3FA00B854AB /* main.m */; };
 		DAFB8C9D198AD3FA00B854AB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8C9C198AD3FA00B854AB /* AppDelegate.m */; };
-		DAFB8CA0198AD3FA00B854AB /* Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8C9E198AD3FA00B854AB /* Tasks.xcdatamodeld */; };
 		DAFB8CA3198AD3FA00B854AB /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8CA2198AD3FA00B854AB /* MasterViewController.m */; };
 		DAFB8CA6198AD3FA00B854AB /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8CA5198AD3FA00B854AB /* DetailViewController.m */; };
 		DAFB8CA9198AD3FA00B854AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAFB8CA7198AD3FA00B854AB /* Main.storyboard */; };
@@ -71,6 +75,16 @@
 
 /* Begin PBXFileReference section */
 		DA31DBEF198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GTMOAuth2ViewTouch.xib; path = GTM/OAuth2/Touch/GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
+		DA31DBF519905E5D00F1E6EA /* GoogleAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAPI.h; sourceTree = "<group>"; };
+		DA31DBF61990727200F1E6EA /* GTSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTSyncManager.h; sourceTree = "<group>"; };
+		DA31DBF71990727200F1E6EA /* GTSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GTSyncManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		DA31DBFA1990748100F1E6EA /* TaskList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TaskList.h; path = LocalTasks/TaskList.h; sourceTree = "<group>"; };
+		DA31DBFB1990748100F1E6EA /* TaskList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TaskList.m; path = LocalTasks/TaskList.m; sourceTree = "<group>"; };
+		DA31DBFD1990748200F1E6EA /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Task.h; path = LocalTasks/Task.h; sourceTree = "<group>"; };
+		DA31DBFE1990748200F1E6EA /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Task.m; path = LocalTasks/Task.m; sourceTree = "<group>"; };
+		DA31DC01199074CB00F1E6EA /* Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tasks.xcdatamodel; sourceTree = "<group>"; };
+		DA31DC031990760E00F1E6EA /* LocalTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalTaskManager.h; sourceTree = "<group>"; };
+		DA31DC041990760E00F1E6EA /* LocalTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LocalTaskManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		DA7C0FB2198F997600F6D52C /* GTLBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBase64.h; sourceTree = "<group>"; };
 		DA7C0FB3198F997600F6D52C /* GTLBatchQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBatchQuery.h; sourceTree = "<group>"; };
 		DA7C0FB4198F997600F6D52C /* GTLBatchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBatchResult.h; sourceTree = "<group>"; };
@@ -126,7 +140,6 @@
 		DAFB8C99198AD3FA00B854AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DAFB8C9B198AD3FA00B854AB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DAFB8C9C198AD3FA00B854AB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		DAFB8C9F198AD3FA00B854AB /* Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tasks.xcdatamodel; sourceTree = "<group>"; };
 		DAFB8CA1198AD3FA00B854AB /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
 		DAFB8CA2198AD3FA00B854AB /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		DAFB8CA4198AD3FA00B854AB /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -160,12 +173,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA31DBF91990743C00F1E6EA /* LocalTasks */ = {
+			isa = PBXGroup;
+			children = (
+				DA31DC031990760E00F1E6EA /* LocalTaskManager.h */,
+				DA31DC041990760E00F1E6EA /* LocalTaskManager.m */,
+				DA31DBF61990727200F1E6EA /* GTSyncManager.h */,
+				DA31DBF71990727200F1E6EA /* GTSyncManager.m */,
+				DA31DBFD1990748200F1E6EA /* Task.h */,
+				DA31DBFE1990748200F1E6EA /* Task.m */,
+				DA31DBFA1990748100F1E6EA /* TaskList.h */,
+				DA31DBFB1990748100F1E6EA /* TaskList.m */,
+				DA31DC00199074CB00F1E6EA /* Tasks.xcdatamodeld */,
+			);
+			name = LocalTasks;
+			sourceTree = "<group>";
+		};
 		DA7C0F74198F935000F6D52C /* GTLTouchStaticLib */ = {
 			isa = PBXGroup;
 			children = (
 				DA31DBEF198FAB5F00F1E6EA /* GTMOAuth2ViewTouch.xib */,
 				DA7C102F198FA2B700F6D52C /* Tasks */,
 				DA7C0FB1198F997600F6D52C /* Headers */,
+				DA31DBF519905E5D00F1E6EA /* GoogleAPI.h */,
 			);
 			name = GTLTouchStaticLib;
 			sourceTree = "<group>";
@@ -283,7 +313,7 @@
 				DACA8D0D198B055D002E4EC9 /* TaskListViewController.m */,
 				DAFB8CA7198AD3FA00B854AB /* Main.storyboard */,
 				DAFB8CAA198AD3FA00B854AB /* Images.xcassets */,
-				DAFB8C9E198AD3FA00B854AB /* Tasks.xcdatamodeld */,
+				DA31DBF91990743C00F1E6EA /* LocalTasks */,
 				DAFB8C97198AD3FA00B854AB /* Supporting Files */,
 				DAD6E143198C2EF600CC9B1C /* NSString+UUID.m */,
 				DAD6E145198C2F5E00CC9B1C /* NSString+UUID.h */,
@@ -458,16 +488,20 @@
 				DA7C1045198FA2B700F6D52C /* GTLTasksTasks.m in Sources */,
 				DAD6E144198C2EF600CC9B1C /* NSString+UUID.m in Sources */,
 				DACA8D0E198B055D002E4EC9 /* TaskListViewController.m in Sources */,
+				DA31DBFC1990748100F1E6EA /* TaskList.m in Sources */,
 				DA7C1044198FA2B700F6D52C /* GTLTasksTaskLists.m in Sources */,
 				DAFB8CA3198AD3FA00B854AB /* MasterViewController.m in Sources */,
+				DA31DBF81990727200F1E6EA /* GTSyncManager.m in Sources */,
 				DAFB8C9D198AD3FA00B854AB /* AppDelegate.m in Sources */,
 				DA7C1043198FA2B700F6D52C /* GTLTasksTaskList.m in Sources */,
 				DA7C1042198FA2B700F6D52C /* GTLTasksTask.m in Sources */,
 				DA7C1040198FA2B700F6D52C /* GTLServiceTasks.m in Sources */,
+				DA31DC051990760E00F1E6EA /* LocalTaskManager.m in Sources */,
 				DA7C1041198FA2B700F6D52C /* GTLTasksConstants.m in Sources */,
 				DA7C103F198FA2B700F6D52C /* GTLQueryTasks.m in Sources */,
+				DA31DC02199074CB00F1E6EA /* Tasks.xcdatamodeld in Sources */,
 				DAFB8C9A198AD3FA00B854AB /* main.m in Sources */,
-				DAFB8CA0198AD3FA00B854AB /* Tasks.xcdatamodeld in Sources */,
+				DA31DBFF1990748200F1E6EA /* Task.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +618,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Tasks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -593,6 +628,7 @@
 					"$(PROJECT_DIR)/Google",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -601,6 +637,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Tasks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -682,13 +719,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		DAFB8C9E198AD3FA00B854AB /* Tasks.xcdatamodeld */ = {
+		DA31DC00199074CB00F1E6EA /* Tasks.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				DAFB8C9F198AD3FA00B854AB /* Tasks.xcdatamodel */,
+				DA31DC01199074CB00F1E6EA /* Tasks.xcdatamodel */,
 			);
-			currentVersion = DAFB8C9F198AD3FA00B854AB /* Tasks.xcdatamodel */;
-			path = Tasks.xcdatamodeld;
+			currentVersion = DA31DC01199074CB00F1E6EA /* Tasks.xcdatamodel */;
+			name = Tasks.xcdatamodeld;
+			path = LocalTasks/Tasks.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
