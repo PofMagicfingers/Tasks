@@ -1,8 +1,9 @@
 //
 //  LocalTaskManager.h
-//  GTaskMaster_Mac
+//  From GTaskMaster_Mac
 //
 //  Created by Kurt Hardin on 6/26/12.
+//  Adapted by Pof on 8/5/14
 //  Copyright (c) 2012 Kurt Hardin. All rights reserved.
 //
 

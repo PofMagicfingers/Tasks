@@ -193,7 +193,7 @@ int const kDefaultSyncIntervalSec = 300;
                                                                                  id serverTaskLists, NSError *error) {
         
         if (error) {
-            DLog(@"Error fetching task lists from server:\n  %@", error);
+            NSLog(@"Error fetching task lists from server:\n  %@", error);
         } else {
             NSMutableArray *localTaskLists = [NSMutableArray arrayWithArray:[self.taskManager taskLists]];
             
@@ -269,7 +269,7 @@ int const kDefaultSyncIntervalSec = 300;
                                                      id newTaskList, NSError *error) {
             
             if (error) {
-                DLog(@"Error adding task to server:\n  %@", error);
+                NSLog(@"Error adding task to server:\n  %@", error);
                 
             } else {
                 [self.taskManager updateManagedTaskList:localTaskList withServerTaskList:newTaskList];
@@ -298,7 +298,7 @@ int const kDefaultSyncIntervalSec = 300;
                                                      id updatedTaskList, NSError *error) {
             
             if (error) {
-                DLog(@"Error updating task list:\n  %@", error);
+                NSLog(@"Error updating task list:\n  %@", error);
                 
             } else {
                 [self.taskManager updateTaskList:updatedTaskList];
@@ -323,7 +323,7 @@ int const kDefaultSyncIntervalSec = 300;
                                                  id item, NSError *error) {
         
         if (error) {
-            DLog(@"Error removing task list:\n  %@", error);
+            NSLog(@"Error removing task list:\n  %@", error);
             
         } else {
             [self.taskManager removeTaskList:localTaskList];
@@ -343,7 +343,7 @@ int const kDefaultSyncIntervalSec = 300;
     query.showDeleted = YES;
     query.maxResults = 2000;
     
-    DLog(@"Fetching tasks for tasklist (%@), query.maxResults=%lld", serverTaskList.identifier, query.maxResults);
+    NSLog(@"Fetching tasks for tasklist (%@), query.maxResults=%lld", serverTaskList.identifier, query.maxResults);
     
     [self performQuery:query completionHandler:^(GTLServiceTicket *ticket,
                                                  id serverTasks, NSError *error) {
@@ -382,7 +382,7 @@ int const kDefaultSyncIntervalSec = 300;
                 processedCount++;
             }
             
-            DLog(@"Processed %d tasks from server, %d added\n\n", processedCount, addedCount);
+            NSLog(@"Processed %d tasks from server, %d added\n\n", processedCount, addedCount);
             
             if (localTasks.count > 0) {
                 for (Task *task in localTasks) {
@@ -412,7 +412,7 @@ int const kDefaultSyncIntervalSec = 300;
                                                      id serverTask, NSError *error) {
             
             if (error) {
-                DLog(@"Error adding task to server:\n  %@", error);
+                NSLog(@"Error adding task to server:\n  %@", error);
                 
             } else {
                 [self.taskManager updateManagedTask:localTask withServerTask:serverTask];
@@ -443,7 +443,7 @@ int const kDefaultSyncIntervalSec = 300;
                                                      id serverTask, NSError *error) {
             
             if (error) {
-                DLog(@"Error updating task on server:\n  %@", error);
+                NSLog(@"Error updating task on server:\n  %@", error);
                 
             } else {
                 [self.taskManager updateTask:serverTask];

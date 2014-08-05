@@ -13,9 +13,6 @@
 
 #import "AppDelegate.h"
 
-#import "GTLTasks.h"
-#import "GTMOAuth2ViewControllerTouch.h"
-
 @interface MasterViewController ()
 
 @property (strong, nonatomic) NSManagedObject *_renaming_object;
@@ -39,16 +36,70 @@
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
-    self.toolbarItems = [NSArray arrayWithObject:[[UIBarButtonItem alloc]
-                                                  initWithTitle:@"Sync"
-                                                  style:UIBarButtonItemStyleBordered
-                                                  target:self
-                                                  action:@selector(connectGoogle:)]]; // Reset toolbar items
+    [self updateToolbar];
+}
+
+- (void)updateToolbar {
+    if ([[self appDelegate] googleIsSignedIn]) {
+        self.toolbarItems = [NSArray arrayWithObjects:
+                             [[UIBarButtonItem alloc]
+                              initWithTitle:@"Sync"
+                              style:UIBarButtonItemStyleBordered
+                              target:self
+                              action:@selector(syncWithGoogle:)],
+                             [[UIBarButtonItem alloc]
+                              initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                              target:nil action:NULL],
+                             [[UIBarButtonItem alloc]
+                              initWithTitle:@"Log out from Google"
+                              style:UIBarButtonItemStylePlain
+                              target:self
+                              action:@selector(disconnectGoogle:)],
+                             nil];
+    } else {
+        self.toolbarItems = [NSArray arrayWithObjects:
+                             [[UIBarButtonItem alloc]
+                              initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                              target:nil action:NULL],
+                             [[UIBarButtonItem alloc]
+                              initWithTitle:@"Login with Google"
+                              style:UIBarButtonItemStylePlain
+                              target:self
+                              action:@selector(connectGoogle:)],
+                             nil];
+    }
     self.navigationController.toolbarHidden = NO;
 }
 
 - (void)connectGoogle:(id)sender {
-    [(AppDelegate *)[UIApplication sharedApplication].delegate googleSignIn:NULL];
+    [[self appDelegate] googleSignIn:^(GTMOAuth2ViewControllerTouch *viewController, GTMOAuth2Authentication *auth, NSError *error) {
+        if (error) {
+            [[[UIAlertView alloc] initWithTitle:@"Error!"
+                                       message:[error.userInfo objectForKey:@"NSLocalizedDescription"]
+                                      delegate:nil
+                             cancelButtonTitle:@"Okay"
+                              otherButtonTitles:nil] show];
+        } else {
+            [self updateToolbar];
+            NSLog(@"auth : %@", auth);
+            [self syncWithGoogle:self];
+        }
+    }];
+}
+
+- (void)disconnectGoogle:(id)sender {
+    [[self appDelegate] googleSignOut];
+    [self updateToolbar];
+}
+
+- (void)syncWithGoogle:(id)sender {
+    if([[self appDelegate] googleIsSignedIn]) {
+        [[[UIAlertView alloc] initWithTitle:@"Sync here"
+                                    message:@"will sync when implemented"
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -336,6 +387,12 @@
         }
         self._renaming_object = nil;
     }
+}
+
+#pragma mark - Utils
+
+- (AppDelegate *)appDelegate {
+    return (AppDelegate *)[UIApplication sharedApplication].delegate;
 }
 
 @end

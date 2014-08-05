@@ -76,7 +76,10 @@
                               clientID:kMyClientID
                               clientSecret:kMyClientSecret
                               keychainItemName:kKeychainItemName
-                              completionHandler:handler];
+                              completionHandler:^(GTMOAuth2ViewControllerTouch *viewController, GTMOAuth2Authentication *auth, NSError *error) {
+                                  _googleAuth = auth;
+                                  handler(viewController, _googleAuth, error);
+                              }];
         authViewController.hidesBottomBarWhenPushed = YES;
         [(UINavigationController *)self.window.rootViewController pushViewController:authViewController animated:YES];
 
@@ -87,6 +90,7 @@
     if ([self googleIsSignedIn]) {
         [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:kKeychainItemName];
         [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.googleAuth];
+        [self googleAutoSignIn]; // Auto SignIn when no credentials to reset _googleAuth
     }
 }
 

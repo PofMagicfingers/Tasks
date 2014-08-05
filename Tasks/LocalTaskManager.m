@@ -1,8 +1,9 @@
 //
 //  LocalTaskManager.m
-//  GTaskMaster_Mac
+//  From GTaskMaster_Mac
 //
 //  Created by Kurt Hardin on 6/26/12.
+//  Adapted by Pof on 8/5/14
 //  Copyright (c) 2012 Kurt Hardin. All rights reserved.
 //
 
@@ -52,7 +53,7 @@
 }
 
 - (TaskList *)newTaskListWithTitle:(NSString *)title {
-    DLog(@"Create new local task list: '%@'\n", title);
+    NSLog(@"Create new local task list: '%@'\n", title);
     
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TaskList"
                                               inManagedObjectContext:self.managedObjectContext];
@@ -85,7 +86,7 @@
 
 - (void)addTaskList:(GTLTasksTaskList *)serverTaskList {
     
-    DLog(@"Add new local task list from server: '%@'\n", serverTaskList.title);
+    NSLog(@"Add new local task list from server: '%@'\n", serverTaskList.title);
     
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"TaskList"
                                               inManagedObjectContext:self.managedObjectContext];
@@ -96,7 +97,7 @@
 
 - (void)updateTaskList:(GTLTasksTaskList *)serverTaskList {
     
-    DLog(@"Update local task list from server: '%@'\n", serverTaskList.title);
+    NSLog(@"Update local task list from server: '%@'\n", serverTaskList.title);
     
     TaskList *taskList = [self taskListWithId:serverTaskList.identifier];
     [self updateManagedTaskList:taskList withServerTaskList:serverTaskList];
@@ -139,7 +140,7 @@
                   andNotes:(NSString *)notes
                 inTaskList:(TaskList *)taskList {
     
-    DLog(@"Creating new local task: '%@' in list: '%@'\n", title, taskList.title);
+    NSLog(@"Creating new local task: '%@' in list: '%@'\n", title, taskList.title);
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Task"
                                               inManagedObjectContext:self.managedObjectContext];
     Task *newTask = [[Task alloc] initWithEntity:entity
@@ -178,7 +179,7 @@
 }
 
 - (void)addTask:(GTLTasksTask *)serverTask toList:(NSString *)taskListId {
-    DLog(@"Adding new local task from server: '%@'\n", serverTask.title);
+    NSLog(@"Adding new local task from server: '%@'\n", serverTask.title);
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Task"
                                               inManagedObjectContext:self.managedObjectContext];
     Task *task = [[Task alloc] initWithEntity:entity
@@ -188,7 +189,7 @@
 }
 
 - (void)updateTask:(GTLTasksTask *)serverTask {
-    DLog(@"Updating local task from server: '%@'\n", serverTask.title);
+    NSLog(@"Updating local task from server: '%@'\n", serverTask.title);
     Task *task = [self taskWithId:serverTask.identifier];
     [self updateManagedTask:task withServerTask:serverTask];
 }
@@ -201,19 +202,19 @@
     
     [self.managedObjectContext performBlockAndWait:^{
         
-        DLog(@"Saving managedObjectContext");
+        NSLog(@"Saving managedObjectContext");
         NSError *error = nil;
         NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
         if (managedObjectContext != nil) {
             
 #if !TARGET_OS_IPHONE
             if (![managedObjectContext commitEditing]) {
-                DLog(@"Unable to commit editing before saving");
+                NSLog(@"Unable to commit editing before saving");
             }
 #endif
             
             if ([[self managedObjectContext] hasChanges] && ![[self managedObjectContext] save:&error]) {
-                DLog(@"Unresolved error saving context: %@, %@", error, [error userInfo]);
+                NSLog(@"Unresolved error saving context: %@, %@", error, [error userInfo]);
                 [self presentError:error];
                 //            abort();
             }
@@ -224,7 +225,7 @@
 //                
 //                NSError *err;
 //                if (![managedObjectContext.parentContext save:&err]) {
-//                    DLog(@"Unresolved error saving parent context: %@, %@", err, [err userInfo]);
+//                    NSLog(@"Unresolved error saving parent context: %@, %@", err, [err userInfo]);
 //                    [self presentError:err];
 //                }
 //                
@@ -313,7 +314,7 @@
                  Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
                  
                  */
-                DLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
                 
 //                abort();
                 _sharedPersistentStoreCoordinator = nil;
@@ -369,7 +370,7 @@
                 }
                 
             } else {
-                DLog(@"No model to generate a store from");
+                NSLog(@"No model to generate a store from");
                 
             }
         }
@@ -401,14 +402,14 @@
 // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
 - (NSManagedObjectContext *)managedObjectContext {
     if (!_managedObjectContext) {
-        if (self.managedObjectContextConcurrencyType) {
-            if (self.managedObjectContextConcurrencyType == NSMainQueueConcurrencyType) {
+//        if (self.managedObjectContextConcurrencyType) {
+//            if (self.managedObjectContextConcurrencyType == NSMainQueueConcurrencyType) {
                 _managedObjectContext = [LocalTaskManager sharedManagedObjectContext];
-            } else {
-                _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:self.managedObjectContextConcurrencyType];
-                [_managedObjectContext setParentContext:[LocalTaskManager sharedManagedObjectContext]];
-            }
-        }
+//            } else {
+//                _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:self.managedObjectContextConcurrencyType];
+//                [_managedObjectContext setParentContext:[LocalTaskManager sharedManagedObjectContext]];
+//            }
+//        }
     }
     
     return _managedObjectContext;
