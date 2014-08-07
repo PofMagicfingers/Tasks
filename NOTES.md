@@ -1,6 +1,5 @@
 Notes
 =========
----
 Why Core Data ?
 -------
 In this project I'm using Core Data. I never had the opportunity to use it before, but it seemed to be the best fit for our case. Entity validations and requests might not be perfect, but like I said, it's the first time I use it.
