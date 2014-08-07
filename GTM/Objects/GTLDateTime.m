@@ -358,7 +358,7 @@ static NSMutableDictionary *gCalendarsForTimeZones = nil;
         sign, (long)(offset/(60*60)) % 24, (long)(offset / 60) % 60];
     }
 
-    NSString *fractionalSecondsString = @".00";
+    NSString *fractionalSecondsString = @".000";
     if (self.milliseconds > 0.0) {
       fractionalSecondsString = [NSString stringWithFormat:@".%03ld", (long)self.milliseconds];
     }

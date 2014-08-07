@@ -151,7 +151,7 @@
   XCTAssertEqualObjects(query.JSON, expected);
   
   // date
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   query.arrayDate = @[ [GTLDateTime dateTimeWithRFC3339String:dateStr] ];
   expected[@"arrayDate"] = @[dateStr];
   XCTAssertEqualObjects(query.JSON, expected);  

@@ -158,7 +158,7 @@ static Class gAdditionalPropsClass = Nil;
   XCTAssertEqualObjects(obj.JSON, expected);
 
   // date
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   obj.aDate = [GTLDateTime dateTimeWithRFC3339String:dateStr];
   expected[@"a_date"] = dateStr;
   XCTAssertEqualObjects(obj.JSON, expected);
@@ -186,7 +186,7 @@ static Class gAdditionalPropsClass = Nil;
   XCTAssertEqualObjects(obj.aNum, @1234);
 
   // date
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   XCTAssertEqualObjects(obj.aDate,
                        [GTLDateTime dateTimeWithRFC3339String:dateStr]);
   XCTAssertNil(obj.date2, @"unexpected dateTime: %@", obj.date2);
@@ -210,7 +210,7 @@ static Class gAdditionalPropsClass = Nil;
   XCTAssertEqualObjects(obj.JSON, expected);
 
   // date
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   obj.arrayDate = @[ [GTLDateTime dateTimeWithRFC3339String:dateStr] ];
   expected[@"arrayDate"] = @[ dateStr ];
   XCTAssertEqualObjects(obj.JSON, expected);
@@ -237,7 +237,7 @@ static Class gAdditionalPropsClass = Nil;
   XCTAssertEqualObjects(obj.arrayNumber, @[ @1234 ]);
 
   // date
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   XCTAssertEqualObjects(obj.arrayDate,
                        @[ [GTLDateTime dateTimeWithRFC3339String:dateStr] ]);
 }
@@ -249,7 +249,7 @@ static Class gAdditionalPropsClass = Nil;
 
   NSString *anythingStr = @"as string";
   NSNumber *anythingNumber = @9876;
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   GTLDateTime *anythingDate = [GTLDateTime dateTimeWithRFC3339String:dateStr];
   NSArray *anythingArray = @[ @"array of string" ];
 
@@ -354,7 +354,7 @@ static Class gAdditionalPropsClass = Nil;
 
   NSArray *arrayAnythingStr = @[ @"as string" ];
   NSArray *arrayAnythingNumber = @[ @9876 ];
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   NSArray *arrayAnythingDate =
     @[ [GTLDateTime dateTimeWithRFC3339String:dateStr] ];
 
@@ -389,7 +389,7 @@ static Class gAdditionalPropsClass = Nil;
   NSString * const jsonStrArrayAnyNumber =
     @"{\"anything\":[9876]}";
   NSString * const jsonStrArrayAnyDate =
-    @"{\"anything\":[\"2011-01-14T15:00:00-01:00\"]}";
+    @"{\"anything\":[\"2011-01-14T15:00:00.000-01:00\"]}";
 
   // string
 
@@ -426,7 +426,7 @@ static Class gAdditionalPropsClass = Nil;
   obj = [GTLTestingObject objectWithJSON:json];
   XCTAssertNotNil(obj);
 
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   XCTAssertEqualObjects(obj.anything, @[ dateStr ]);
 
   // GTLObject support tested in the ArraySubObjectSupport test.
@@ -582,7 +582,7 @@ static Class gAdditionalPropsClass = Nil;
   expected[@"arrayNumber"] = @[ @[ @[ @987 ] ] ];
   XCTAssertEqualObjects(obj.JSON, expected);
 
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   obj.arrayDate = @[ @[ [GTLDateTime dateTimeWithRFC3339String:dateStr] ] ];
   expected[@"arrayDate"] = @[ @[ dateStr ] ];
   XCTAssertEqualObjects(obj.JSON, expected);
@@ -614,7 +614,7 @@ static Class gAdditionalPropsClass = Nil;
   NSString * const jsonStr =
     @"{\"arrayString\" : [[\"foo\"]],"
     @" \"arrayNumber\" : [[[987]]],"
-    @" \"arrayDate\" : [[\"2011-01-14T15:00:00-01:00\"]],"
+    @" \"arrayDate\" : [[\"2011-01-14T15:00:00.000-01:00\"]],"
     @" \"arrayKids\" : [[{\"a_str\" : \"I'm a kid\"}]],"
     @" \"arrayAnything\" : [[\"a string\"]]"
     @"}";
@@ -635,7 +635,7 @@ static Class gAdditionalPropsClass = Nil;
   XCTAssertEqualObjects(obj.arrayNumber, @[ @[ @[ @987 ] ] ],
                        @"array of array of array of number");
 
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   XCTAssertEqualObjects(obj.arrayDate,
                        @[ @[ [GTLDateTime dateTimeWithRFC3339String:dateStr] ] ],
                        @"array of array of datetime");
@@ -722,7 +722,7 @@ static Class gAdditionalPropsClass = Nil;
 
   // date
   [GTLTestingAdditionalPropertiesObject setAdditionalPropsClass:[GTLDateTime class]];
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   [obj setAdditionalProperty:[GTLDateTime dateTimeWithRFC3339String:dateStr]
                      forName:@"ap3"];
   expected[@"ap3"] = dateStr;
@@ -731,7 +731,7 @@ static Class gAdditionalPropsClass = Nil;
 
 - (void)testGetAdditionalPropertiesBasicTypes {
   NSString * const jsonStr =
-    @"{\"ap3\":\"2011-01-14T15:00:00-01:00\",\"ap2\":1234,\"ap1\":\"foo bar\"}";
+    @"{\"ap3\":\"2011-01-14T15:00:00.000-01:00\",\"ap2\":1234,\"ap1\":\"foo bar\"}";
   NSError *err = nil;
   NSMutableDictionary *json = [GTLJSONParser objectWithString:jsonStr
                                                         error:&err];
@@ -755,7 +755,7 @@ static Class gAdditionalPropsClass = Nil;
 
   // date
   [GTLTestingAdditionalPropertiesObject setAdditionalPropsClass:[GTLDateTime class]];
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   XCTAssertEqualObjects([obj additionalPropertyForName:@"ap3"],
                        [GTLDateTime dateTimeWithRFC3339String:dateStr]);
 }
@@ -817,7 +817,7 @@ static Class gAdditionalPropsClass = Nil;
   XCTAssertEqualObjects(obj.JSON, expected);
 
   // date
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   [obj setAdditionalProperty:[GTLDateTime dateTimeWithRFC3339String:dateStr]
                      forName:@"ap3"];
   expected[@"ap3"] = dateStr;
@@ -836,7 +836,7 @@ static Class gAdditionalPropsClass = Nil;
 
 - (void)testGetAdditionalPropertiesAnything {
   NSString * const jsonStr =
-    @"{\"ap3\":\"2011-01-14T15:00:00-01:00\",\"ap2\":1234,\"ap1\":\"foo bar\", \"aKid\":{ \"a_str\": \"I'm a kid\" } }";
+    @"{\"ap3\":\"2011-01-14T15:00:00.000-01:00\",\"ap2\":1234,\"ap1\":\"foo bar\", \"aKid\":{ \"a_str\": \"I'm a kid\" } }";
   NSError *err = nil;
   NSMutableDictionary *json = [GTLJSONParser objectWithString:jsonStr
                                                         error:&err];
@@ -858,7 +858,7 @@ static Class gAdditionalPropsClass = Nil;
                        @1234);
 
   // date - just get the string back, nothing tells it to conver to a date.
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   XCTAssertEqualObjects([obj additionalPropertyForName:@"ap3"],
                        dateStr);
 
@@ -893,7 +893,7 @@ static Class gAdditionalPropsClass = Nil;
 
   // date
   [GTLTestingAdditionalPropertiesObject setAdditionalPropsClass:[GTLDateTime class]];
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   [obj setAdditionalProperty:@[ [GTLDateTime dateTimeWithRFC3339String:dateStr] ]
                      forName:@"apArray3"];
   expected[@"apArray3"] = @[ dateStr ];
@@ -902,7 +902,7 @@ static Class gAdditionalPropsClass = Nil;
 
 - (void)testGetAdditionalPropertiesArraysOfBasicTypes {
   NSString * const jsonStr =
-    @"{\"apArray3\":[\"2011-01-14T15:00:00-01:00\"],\"apArray2\":[1234],\"apArray1\":[\"foo bar\"]}";
+    @"{\"apArray3\":[\"2011-01-14T15:00:00.000-01:00\"],\"apArray2\":[1234],\"apArray1\":[\"foo bar\"]}";
   NSError *err = nil;
   NSMutableDictionary *json = [GTLJSONParser objectWithString:jsonStr
                                                         error:&err];
@@ -926,7 +926,7 @@ static Class gAdditionalPropsClass = Nil;
 
   // date
   [GTLTestingAdditionalPropertiesObject setAdditionalPropsClass:[GTLDateTime class]];
-  NSString * const dateStr = @"2011-01-14T15:00:00-01:00";
+  NSString * const dateStr = @"2011-01-14T15:00:00.000-01:00";
   XCTAssertEqualObjects([obj additionalPropertyForName:@"apArray3"],
                        @[ [GTLDateTime dateTimeWithRFC3339String:dateStr] ]);
 }
