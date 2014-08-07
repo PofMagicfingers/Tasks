@@ -12,7 +12,7 @@ An online storage was needed to meet the requirements of the app, Google Tasks w
 ---
 Any help ?
 ------
-I used the GTSyncManager of the [GTasksMaster project](https://github.com/kurthardin/GTaskMaster) found on GitHub but had to adapt it to my code, and rewrite some things to make it work as I wanted. (Sync priority when conflicts etc...)
+I used the GTSyncManager and some of the LocalTaskManager from the [GTasksMaster project](https://github.com/kurthardin/GTaskMaster) found on GitHub but had to adapt it to my code, and rewrite some things to make it work as I wanted. (Sync priority when conflicts etc...)
 
 ---
 Testing
