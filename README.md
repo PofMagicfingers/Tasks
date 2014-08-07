@@ -1,7 +1,11 @@
 Tasks
 =====
 
-A simple iOS Tasks app, with a Google Tasks sync feature.
+A simple iOS Tasks app, with a Google Tasks sync feature. 
+
+It's an Universal App, but it can't be build for the iPad Air simulator, for an unknown reason. I don't have any iPad Air to try it. 
+
+Works fine on my iPhone 4S and all other simulators though.
 
 Why ?
 =====
