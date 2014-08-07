@@ -251,9 +251,10 @@
     if([[self appDelegate] googleIsSignedIn]) {
         if([list isNew])
             cell.detailTextLabel.text = [@"(Never synced) - " stringByAppendingString: last_modified];
-        else if(list.updated_at > list.synced_at)
+        else if([list.updated_at timeIntervalSince1970] > [list.synced_at timeIntervalSince1970])
             cell.detailTextLabel.text = [@"(Need sync) - " stringByAppendingString:last_modified];
     }
+    NSLog(@"TaskList %@ has detail : %@", list.title, cell.detailTextLabel.text);
 }
 
 #pragma mark - Fetched results controller

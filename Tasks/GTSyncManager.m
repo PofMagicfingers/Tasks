@@ -360,14 +360,36 @@ int const kDefaultSyncIntervalSec = 300;
                     [self.taskManager addTask:serverTask toList:serverTaskList.identifier];
                     addedCount++;
                 } else {
+                    NSString *serverETag = serverTask.ETag;
+                    NSString *localOriginalETag = localTask.etag;
+                    
                     NSDate *serverModDate = serverTask.updated.date;
                     NSDate *localModDate = localTask.updated_at;
                     NSDate *localSyncDate = localTask.synced_at;
-
-                    if ([localModDate timeIntervalSince1970] > [serverModDate timeIntervalSince1970] &&
-                        [localModDate timeIntervalSince1970] > [localSyncDate timeIntervalSince1970]) {
-                        [self updateTaskOnServer:localTask];
-                    } else if (!(serverTask.ETag == localTask.etag)) {
+                    
+                    if (![localModDate isEqualToDate:localSyncDate]) {
+                        // Task has been modified since last sync
+                        
+                        if ([serverETag isEqualToString:localOriginalETag]) {
+                            // However Task hasn't been modified on server since last sync
+                            // so update task on server with the local task
+                            [self updateTaskOnServer:localTask];
+                        } else {
+                            // Task has been also modified on server
+                            if ([localModDate timeIntervalSince1970] > [serverModDate timeIntervalSince1970]) {
+                                // Last modified is local task, update server task with local one
+                                [self updateTaskOnServer:localTask];
+                            } else if ([serverModDate timeIntervalSince1970] > [localModDate timeIntervalSince1970]) {
+                                // Last modified is the server task, update local task with server one
+                                [self.taskManager updateTask:serverTask];
+                            } else {
+                                NSLog(@"WAT? Can't determine which task (with id : %@) is the more recent one between server (%@) and local (%@)", localTask.identifier, [serverTask.updated.date description], [localTask.updated_at description]);
+                            }
+                        }
+                    } else if (![serverModDate isEqualToDate:localSyncDate]) {
+                        // Task has been modified on server since last sync
+                        // (AND task hasn't been modified locally)
+                        // so just update the local task from server record
                         [self.taskManager updateTask:serverTask];
                     }
                     
@@ -377,13 +399,15 @@ int const kDefaultSyncIntervalSec = 300;
                 processedCount++;
             }
             
-            NSLog(@"Processed %d tasks from server, %d added\n\n", processedCount, addedCount);
+            NSLog(@"Processed %d tasks from server, %d locally added\n\n", processedCount, addedCount);
             
             if (localTasks.count > 0) {
                 for (Task *task in localTasks) {
                     if ([task isNew]) {
+                        NSLog(@"Added a task titled %@ to the server",task.title);
                         [self addTaskToServer:task];
                     } else {
+                        NSLog(@"Removing task titled %@ from local storage", task.title);
                         [self.taskManager removeTask:task];
                     }
                 }
