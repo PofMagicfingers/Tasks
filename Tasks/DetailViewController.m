@@ -77,8 +77,6 @@
     if ([[self.fetchedResultsController managedObjectContext] save:&error]) {
         [self.parentViewController dismissViewControllerAnimated:YES completion:NULL];
     } else {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         [[[UIAlertView alloc]
           initWithTitle:@"Error!"
@@ -94,12 +92,6 @@
     self.task.list.updated_at = [NSDate date];
     [self saveAndDissmis:sender];
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 #pragma mark - Table View
 

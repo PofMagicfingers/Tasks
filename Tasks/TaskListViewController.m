@@ -24,10 +24,6 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.clearsSelectionOnViewWillAppear = NO;
-        self.preferredContentSize = CGSizeMake(320.0, 600.0);
-    }
 }
 
 - (void)viewDidLoad {
@@ -74,8 +70,6 @@
     // Save the context.
     NSError *error = nil;
     if (![context save:&error]) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         [[[UIAlertView alloc]
           initWithTitle:@"Error!"
@@ -115,8 +109,6 @@
         NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
         Task *newTask = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
         
-        // If appropriate, configure the new managed object.
-        // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
         newTask.identifier = [@"local_" stringByAppendingString:[NSString UUID]];
         newTask.title = name;
         newTask.list = self.list;
@@ -126,8 +118,6 @@
         // Save the context.
         NSError *error = nil;
         if (![context save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             [[[UIAlertView alloc]
               initWithTitle:@"Error!"
@@ -189,8 +179,6 @@
         
         NSError *error = nil;
         if (![context save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             [[[UIAlertView alloc]
               initWithTitle:@"Error!"
@@ -201,13 +189,6 @@
         }
     }
 }
-
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-//        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-////        self.detailViewController.detailItem = object;
-//    }
-//}
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Task *task = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -246,7 +227,7 @@
     if (self.list && self.list.identifier) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         // Edit the entity name as appropriate.
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Task" inManagedObjectContext:self.managedObjectContext];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Task" inManagedObjectContext:[LocalTaskManager sharedManagedObjectContext]];
         [fetchRequest setEntity:entity];
         
         // Set the batch size to a suitable number.
@@ -262,16 +243,12 @@
         [fetchRequest setPredicate:[NSPredicate
                                     predicateWithFormat:@"list.identifier == %@ AND trashed == FALSE", self.list.identifier]];
         
-        // Edit the section name key path and cache name if appropriate.
-        // nil for section name key path means "no sections".
-        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"sectionName" cacheName:[@"Tasks_" stringByAppendingString:self.list.identifier]];
+        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[LocalTaskManager sharedManagedObjectContext] sectionNameKeyPath:@"sectionName" cacheName:[@"Tasks_" stringByAppendingString:self.list.identifier]];
         aFetchedResultsController.delegate = self;
         self.fetchedResultsController = aFetchedResultsController;
         
         NSError *error = nil;
         if (![self.fetchedResultsController performFetch:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             [[[UIAlertView alloc]
               initWithTitle:@"Error!"
@@ -339,16 +316,6 @@
 {
     [self.tableView endUpdates];
 }
-
-/*
- // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed.
- 
- - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
- {
- // In the simplest, most efficient, case, reload the table view.
- [self.tableView reloadData];
- }
- */
 
 #pragma mark - Alert View
 

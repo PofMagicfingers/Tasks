@@ -15,8 +15,6 @@
 
 @property (strong, nonatomic) TaskList *list;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
 
 @end
 
