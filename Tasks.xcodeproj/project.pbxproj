@@ -13,6 +13,8 @@
 		DA31DBFF1990748200F1E6EA /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = DA31DBFE1990748200F1E6EA /* Task.m */; };
 		DA31DC02199074CB00F1E6EA /* Tasks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DA31DC00199074CB00F1E6EA /* Tasks.xcdatamodeld */; };
 		DA31DC051990760E00F1E6EA /* LocalTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DA31DC041990760E00F1E6EA /* LocalTaskManager.m */; };
+		DA671D5119934AC400406173 /* TaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DA671D5019934AC400406173 /* TaskTests.m */; };
+		DA671D571993646F00406173 /* TaskListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DA671D561993646F00406173 /* TaskListTests.m */; };
 		DA7C1009198F9AC700F6D52C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1006198F9A8A00F6D52C /* CoreData.framework */; };
 		DA7C100A198F9AC700F6D52C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1004198F9A8300F6D52C /* Foundation.framework */; };
 		DA7C102C198FA17600F6D52C /* libGTLTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C1027198FA16100F6D52C /* libGTLTouchStaticLib.a */; };
@@ -86,6 +88,8 @@
 		DA31DC01199074CB00F1E6EA /* Tasks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tasks.xcdatamodel; sourceTree = "<group>"; };
 		DA31DC031990760E00F1E6EA /* LocalTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalTaskManager.h; sourceTree = "<group>"; };
 		DA31DC041990760E00F1E6EA /* LocalTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LocalTaskManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		DA671D5019934AC400406173 /* TaskTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskTests.m; sourceTree = "<group>"; };
+		DA671D561993646F00406173 /* TaskListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskListTests.m; sourceTree = "<group>"; };
 		DA7C0FB2198F997600F6D52C /* GTLBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBase64.h; sourceTree = "<group>"; };
 		DA7C0FB3198F997600F6D52C /* GTLBatchQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBatchQuery.h; sourceTree = "<group>"; };
 		DA7C0FB4198F997600F6D52C /* GTLBatchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLBatchResult.h; sourceTree = "<group>"; };
@@ -338,6 +342,8 @@
 			isa = PBXGroup;
 			children = (
 				DAFB8CB6198AD3FB00B854AB /* TasksTests.m */,
+				DA671D5019934AC400406173 /* TaskTests.m */,
+				DA671D561993646F00406173 /* TaskListTests.m */,
 				DAFB8CB4198AD3FB00B854AB /* Supporting Files */,
 			);
 			path = TasksTests;
@@ -513,6 +519,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA671D5119934AC400406173 /* TaskTests.m in Sources */,
+				DA671D571993646F00406173 /* TaskListTests.m in Sources */,
 				DAFB8CB7198AD3FB00B854AB /* TasksTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
