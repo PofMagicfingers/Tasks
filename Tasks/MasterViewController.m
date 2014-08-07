@@ -75,7 +75,8 @@
 
 - (void)connectGoogle:(id)sender {
     [[self appDelegate] googleSignIn:^(GTMOAuth2ViewControllerTouch *viewController, GTMOAuth2Authentication *auth, NSError *error) {
-        if (error) {
+        if (error && [error.userInfo objectForKey:@"NSLocalizedDescription"] &&
+            ![[error.userInfo objectForKey:@"NSLocalizedDescription"] isEqual:@""]) {
             [[[UIAlertView alloc] initWithTitle:@"Error!"
                                        message:[error.userInfo objectForKey:@"NSLocalizedDescription"]
                                       delegate:nil
@@ -165,7 +166,12 @@
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            [[[UIAlertView alloc]
+             initWithTitle:@"Error!"
+             message:@"An unexpected error happened. Sorry for inconvenience."
+             delegate:nil
+             cancelButtonTitle:@"Okay :("
+             otherButtonTitles:nil] show];
         }
     }
 }
@@ -217,7 +223,12 @@
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            [[[UIAlertView alloc]
+              initWithTitle:@"Error!"
+              message:@"An unexpected error happened. Sorry for inconvenience."
+              delegate:nil
+              cancelButtonTitle:@"Okay :("
+              otherButtonTitles:nil] show];
         }
     }
 }
@@ -293,7 +304,12 @@
 	     // Replace this implementation with code to handle the error appropriately.
 	     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
 	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
+        [[[UIAlertView alloc]
+          initWithTitle:@"Error!"
+          message:@"An unexpected error happened. Sorry for inconvenience."
+          delegate:nil
+          cancelButtonTitle:@"Okay :("
+          otherButtonTitles:nil] show];
 	}
     
     return _fetchedResultsController;
@@ -385,7 +401,12 @@
                     // Replace this implementation with code to handle the error appropriately.
                     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                     NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                    abort();
+                    [[[UIAlertView alloc]
+                      initWithTitle:@"Error!"
+                      message:@"An unexpected error happened. Sorry for inconvenience."
+                      delegate:nil
+                      cancelButtonTitle:@"Okay :("
+                      otherButtonTitles:nil] show];
                 }
             }
         }
