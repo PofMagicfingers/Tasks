@@ -25,6 +25,13 @@
 @dynamic list;
 @dynamic parent;
 
+- (NSString *)sectionName {
+    [self willAccessValueForKey:@"sectionName"];
+    [self didAccessValueForKey:@"sectionName"];
+    
+    return ([self.completed_at isKindOfClass:[NSDate class]] ? @"Done" : @"To Do");
+}
+
 - (NSDate *)synced_at {
     [self willAccessValueForKey:@"synced_at"];
     NSDate *_synced_at = [self primitiveValueForKey:@"synced_at"];
@@ -43,7 +50,16 @@
 
 - (GTLTasksTask *)convertToGTLTasksTask {
     GTLTasksTask *task = [GTLTasksTask object];
-    task.completed = [GTLDateTime dateTimeWithDate:self.completed_at timeZone:[NSTimeZone systemTimeZone]];
+    
+    if ([self.completed_at isKindOfClass:[NSDate class]]) {
+        task.completed = [GTLDateTime dateTimeWithDate:self.completed_at timeZone:[NSTimeZone systemTimeZone]];
+        task.status = @"completed";
+    } else {
+        // Not quite elegant, but the simpliest way to make tha Google API to accept the patch. GTL is not up to date, it's not fully compatible with the API.
+        task.completed = [NSNull null];
+        task.status = @"needsAction";
+    }
+    
     task.notes = self.notes;
     task.title = self.title;
     task.updated = [GTLDateTime dateTimeWithDate:self.updated_at timeZone:[NSTimeZone systemTimeZone]];;

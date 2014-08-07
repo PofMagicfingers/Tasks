@@ -8,6 +8,9 @@
 
 #import "DetailViewController.h"
 
+#import "TaskList.h"
+#import "Task.h"
+
 @interface DetailViewController ()
 
 @end
@@ -29,9 +32,9 @@
 - (void)configureView {
     // Update the user interface for the detail item.
     if (self.task) {
-        self.taskTitle.text = self.taskTitle.placeholder = [self.task valueForKey:@"title"];
-        self.taskCompleted.on = ([self.task valueForKey:@"completed_at"] != nil);
-        self.taskNotes.text = [self.task valueForKey:@"notes"];
+        self.taskTitle.text = self.taskTitle.placeholder = self.task.title;
+        self.taskCompleted.on = (self.task.completed_at != nil);
+        self.taskNotes.text = self.task.notes;
     }
 }
 
@@ -51,29 +54,22 @@
 
 - (void)saveAndDissmis:(id)sender {
 
-    if([[self.taskTitle text] respondsToSelector:@selector(isEqualToString:)] && ![[[self.taskTitle text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""] && ![[self.task valueForKey:@"title"] isEqualToString:[self.taskTitle text]]) {
-        [self.task
-         setValue:[self.taskTitle text]
-         forKey:@"title"];
+    if([[self.taskTitle text] respondsToSelector:@selector(isEqualToString:)] && ![[[self.taskTitle text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""] && ![self.task.title isEqualToString:[self.taskTitle text]]) {
+        self.task.title = [self.taskTitle text];
     }
 
-    if (![[self.task valueForKey:@"notes"] isEqualToString:[self.taskNotes text]]) {
-        [self.task
-         setValue:[self.taskNotes text]
-         forKey:@"notes"];
+    if (![self.task.notes isEqualToString:[self.taskNotes text]]) {
+        self.task.notes = [self.taskNotes text];
     }
 
-    if ([self.taskCompleted isOn] && [self.task valueForKey:@"completed_at"] == nil) {
-        [self.task setValue:[NSDate date] forKey:@"completed_at"];
-    } else if(![self.taskCompleted isOn] && [self.task valueForKey:@"completed_at"] != nil) {
-        [self.task setValue:nil forKey:@"completed_at"];
+    if ([self.taskCompleted isOn] && self.task.completed_at == nil) {
+        self.task.completed_at = [NSDate date];
+    } else if(![self.taskCompleted isOn] && self.task.completed_at != nil) {
+        self.task.completed_at = nil;
     }
     
     if ([self.task hasChanges]) {
-        [self.task setValue:[NSDate date] forKey:@"updated_at"];
-        [[self.task valueForKey:@"list"]
-         setValue:[self.task valueForKey:@"updated_at"]
-         forKey:@"updated_at"];
+        self.task.updated_at = self.task.list.updated_at = [NSDate date];
     }
     
     
@@ -89,12 +85,8 @@
 }
 
 - (void)deleteTaskAndDissmis:(id)sender {
-    [[self.task valueForKey:@"list"]
-     setValue:[NSDate date]
-     forKey:@"updated_at"];
-    
-    [self.task setValue:[NSNumber numberWithBool:YES] forKey:@"trashed"];
-//    [NSFetchedResultsController deleteCacheWithName:[@"Tasks_" stringByAppendingString:[[self.task valueForKey:@"list"] valueForKey:@"identifier"]]];
+    self.task.trashed = [NSNumber numberWithBool:YES];
+    self.task.list.updated_at = [NSDate date];
     [self saveAndDissmis:sender];
 }
 

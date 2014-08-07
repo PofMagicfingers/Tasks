@@ -16,7 +16,7 @@
 
 @interface MasterViewController ()
 
-@property (strong, nonatomic) NSManagedObject *_renaming_object;
+@property (strong, nonatomic) TaskList *_renaming_object;
 
 @end
 
@@ -120,7 +120,7 @@
 }
 
 - (void)renameTaskList:(NSManagedObject *)taskList {
-    self._renaming_object = taskList;
+    self._renaming_object = (TaskList *)taskList;
     UIAlertView *renameTaskList = [[UIAlertView alloc]
                                 initWithTitle:@"Rename Task List"
                                 message:@""
@@ -128,8 +128,8 @@
                                 cancelButtonTitle:@"Cancel"
                                 otherButtonTitles:@"Rename", nil];
     renameTaskList.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [[renameTaskList textFieldAtIndex:0] setPlaceholder:[taskList valueForKey:@"title"]];
-    [[renameTaskList textFieldAtIndex:0] setText:[taskList valueForKey:@"title"]];
+    [[renameTaskList textFieldAtIndex:0] setPlaceholder:self._renaming_object.title];
+    [[renameTaskList textFieldAtIndex:0] setText:self._renaming_object.title];
     [[renameTaskList textFieldAtIndex:0] setReturnKeyType:UIReturnKeyDone];
     renameTaskList.tag = 102;
     [renameTaskList show];
@@ -149,16 +149,15 @@
     } else {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-        NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+        TaskList *newList = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
         
         // If appropriate, configure the new managed object.
         // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-        [newManagedObject setValue:[@"local_"
-                                    stringByAppendingString:[NSString UUID]]
-                            forKey:@"identifier"];
-        [newManagedObject setValue:title forKey:@"title"];
-        [newManagedObject setValue:[NSDate date] forKey:@"updated_at"];
-        [newManagedObject setValue:[NSNumber numberWithBool:NO] forKey:@"trashed"];
+        newList.identifier = [@"local_"
+                                    stringByAppendingString:[NSString UUID]];
+        newList.title = title;
+        newList.updated_at = [NSDate date];
+        newList.trashed = [NSNumber numberWithBool:NO];
         
         // Save the context.
         NSError *error = nil;
@@ -209,13 +208,10 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-
-        [[self.fetchedResultsController objectAtIndexPath:indexPath]
-         setValue:[NSNumber numberWithBool:YES]
-         forKey:@"trashed"];
+        TaskList *list = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
-//        [NSFetchedResultsController deleteCacheWithName:@"TaskLists"];
-
+        list.trashed = [NSNumber numberWithBool:YES];
+        
         NSError *error = nil;
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
@@ -246,9 +242,18 @@
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [object valueForKey:@"title"];
-    cell.detailTextLabel.text = [[object valueForKey:@"updated_at"] description];
+    TaskList *list = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = list.title;
+
+    NSString *last_modified = [NSDateFormatter localizedStringFromDate:list.updated_at dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
+    cell.detailTextLabel.text = last_modified;
+    
+    if([[self appDelegate] googleIsSignedIn]) {
+        if([list isNew])
+            cell.detailTextLabel.text = [@"(Never synced) - " stringByAppendingString: last_modified];
+        else if(list.updated_at > list.synced_at)
+            cell.detailTextLabel.text = [@"(Need sync) - " stringByAppendingString:last_modified];
+    }
 }
 
 #pragma mark - Fetched results controller
@@ -370,8 +375,8 @@
                 
                 // If appropriate, configure the new managed object.
                 // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-                [self._renaming_object setValue:new_title forKey:@"title"];
-                [self._renaming_object setValue:[NSDate date] forKey:@"updated_at"];
+                self._renaming_object.title = new_title;
+                self._renaming_object.updated_at = [NSDate date];
                 
                 // Save the context.
                 NSError *error = nil;

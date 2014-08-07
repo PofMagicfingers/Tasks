@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MasterViewController.h"
+#import "GTSyncManager.h"
 
 @interface AppDelegate ()
             
@@ -62,6 +63,7 @@
                        authForGoogleFromKeychainForName:kKeychainItemName
                        clientID:kMyClientID
                        clientSecret:kMyClientSecret];
+        [[GTSyncManager sharedInstance].tasksService setAuthorizer:_googleAuth];
     }
 }
 

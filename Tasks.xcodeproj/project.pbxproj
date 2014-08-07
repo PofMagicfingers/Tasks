@@ -33,6 +33,7 @@
 		DAFB8CA9198AD3FA00B854AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAFB8CA7198AD3FA00B854AB /* Main.storyboard */; };
 		DAFB8CAB198AD3FA00B854AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAFB8CAA198AD3FA00B854AB /* Images.xcassets */; };
 		DAFB8CB7198AD3FB00B854AB /* TasksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB8CB6198AD3FB00B854AB /* TasksTests.m */; };
+		DAFD5C501991AA27008B5A5E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFD5C4F1991AA27008B5A5E /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +150,7 @@
 		DAFB8CB0198AD3FB00B854AB /* TasksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TasksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAFB8CB5198AD3FB00B854AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAFB8CB6198AD3FB00B854AB /* TasksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TasksTests.m; sourceTree = "<group>"; };
+		DAFD5C4F1991AA27008B5A5E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAFD5C501991AA27008B5A5E /* Security.framework in Frameworks */,
 				DA7C102E198FA1B600F6D52C /* SystemConfiguration.framework in Frameworks */,
 				DA7C102C198FA17600F6D52C /* libGTLTouchStaticLib.a in Frameworks */,
 				DA7C1009198F9AC700F6D52C /* CoreData.framework in Frameworks */,
@@ -238,6 +241,7 @@
 		DA7C1008198F9AB700F6D52C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DAFD5C4F1991AA27008B5A5E /* Security.framework */,
 				DA7C102D198FA1B600F6D52C /* SystemConfiguration.framework */,
 				DA7C1006198F9A8A00F6D52C /* CoreData.framework */,
 				DA7C1004198F9A8300F6D52C /* Foundation.framework */,

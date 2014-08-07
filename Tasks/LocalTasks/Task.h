@@ -27,5 +27,6 @@
 
 - (BOOL)isNew;
 - (GTLTasksTask *)convertToGTLTasksTask;
+- (NSString *)sectionName;
 
 @end

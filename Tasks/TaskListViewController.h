@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+@class TaskList;
+
 @interface TaskListViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic) NSManagedObject *list;
+@property (strong, nonatomic) TaskList *list;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 

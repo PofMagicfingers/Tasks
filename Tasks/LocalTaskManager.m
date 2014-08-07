@@ -166,7 +166,7 @@
 #pragma mark - Server task methods
 
 - (void)updateManagedTask:(Task *)managedTask withServerTask:(GTLTasksTask *)serverTask {
-    managedTask.completed_at = serverTask.completed.date;
+    managedTask.completed_at = [serverTask.status isEqualToString:@"completed"] ? serverTask.completed.date : nil;
     managedTask.trashed = [NSNumber numberWithBool:(serverTask.deleted != nil && [serverTask.deleted boolValue])];
     managedTask.etag = serverTask.ETag;
     managedTask.identifier = serverTask.identifier;

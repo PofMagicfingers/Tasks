@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+@class Task;
+
 @interface DetailViewController : UITableViewController <UITableViewDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSManagedObject *task;
+@property (strong, nonatomic) Task *task;
 
 @property (weak, nonatomic) IBOutlet UITextField *taskTitle;
 @property (weak, nonatomic) IBOutlet UISwitch *taskCompleted;

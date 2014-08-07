@@ -212,14 +212,15 @@ int const kDefaultSyncIntervalSec = 300;
                         shouldProcessTasksForTaskList = NO;
                     } else {
                         NSDate *localModDate = localTaskList.updated_at;
+                        NSDate *localSyncDate = localTaskList.synced_at;
 
-                        if (serverModDate > localTaskList.synced_at ||
-                            localModDate > localTaskList.synced_at) {
-                            if (serverModDate > localModDate) {
-                                [self.taskManager updateTaskList:serverTaskList];
-                            } else if (localModDate > serverModDate) {
-                                [self updateTaskListOnServer:localTaskList];
-                            }
+                        if (localModDate > serverModDate &&
+                                   localModDate > localSyncDate) {
+                            [self updateTaskListOnServer:localTaskList];
+                        } else if (!(serverTaskList.ETag == localTaskList.etag) &&
+                                   serverModDate > localModDate &&
+                                   serverModDate > localSyncDate) {
+                            [self.taskManager updateTaskList:serverTaskList];
                         } else {
                             shouldProcessTasksForTaskList = NO;
                         }
@@ -361,13 +362,13 @@ int const kDefaultSyncIntervalSec = 300;
                 } else {
                     NSDate *serverModDate = serverTask.updated.date;
                     NSDate *localModDate = localTask.updated_at;
-                    if (localModDate > localTask.synced_at ||
-                        serverModDate > localTask.synced_at) {
-                        if (localModDate > serverModDate) {
-                            [self updateTaskOnServer:localTask];
-                        } else if (serverModDate > localModDate) {
-                            [self.taskManager updateTask:serverTask];
-                        }
+                    NSDate *localSyncDate = localTask.synced_at;
+
+                    if ([localModDate timeIntervalSince1970] > [serverModDate timeIntervalSince1970] &&
+                        [localModDate timeIntervalSince1970] > [localSyncDate timeIntervalSince1970]) {
+                        [self updateTaskOnServer:localTask];
+                    } else if (!(serverTask.ETag == localTask.etag)) {
+                        [self.taskManager updateTask:serverTask];
                     }
                     
                     [localTasks removeObject:localTask];

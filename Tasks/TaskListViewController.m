@@ -9,6 +9,10 @@
 #import "TaskListViewController.h"
 #import "NSString+UUID.h"
 
+#import "AppDelegate.h"
+#import "Task.h"
+#import "TaskList.h"
+
 #import "DetailViewController.h"
 
 @interface TaskListViewController ()
@@ -40,7 +44,7 @@
     self.navigationController.toolbarHidden = NO;
     
     if(self.list) {
-        self.title = [self.list valueForKey:@"title"];
+        self.title = self.list.title;
     } else {
         [self.navigationController popViewControllerAnimated:YES];
         [[[UIAlertView alloc] initWithTitle:@"Error"
@@ -61,26 +65,15 @@
     CGPoint tapLocation = [tapRecognizer locationInView:self.tableView];
     NSIndexPath *tappedIndexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:tappedIndexPath];
+    Task *task = [self.fetchedResultsController objectAtIndexPath:tappedIndexPath];
 
-    if([object valueForKey:@"completed_at"] == nil) {
-        [object setValue:[NSDate date] forKey:@"completed_at"];
-    } else {
-        [object setValue:nil forKey:@"completed_at"];
-    }
+    task.completed_at = (task.completed_at == nil) ? [NSDate date] : nil;
     
-    
-    [object setValue:[NSDate date] forKey:@"updated_at"];
-    [self.list setValue:[NSDate date] forKey:@"updated_at"];
-    
+    task.updated_at = ((TaskList *)self.list).updated_at = [NSDate date];
+
     // Save the context.
     NSError *error = nil;
-    if ([context save:&error]) {
-        [self.tableView
-         reloadRowsAtIndexPaths:[NSArray
-                                 arrayWithObject:tappedIndexPath]
-         withRowAnimation: UITableViewRowAnimationNone];
-    } else {
+    if (![context save:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -115,18 +108,15 @@
     } else {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-        NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+        Task *newTask = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
         
         // If appropriate, configure the new managed object.
         // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-        [newManagedObject setValue:[@"local_"
-                                    stringByAppendingString:[NSString UUID]]
-                            forKey:@"identifier"];
-        [newManagedObject setValue:name forKey:@"title"];
-        [newManagedObject setValue:self.list forKey:@"list"];
-        [newManagedObject setValue:[NSDate date] forKey:@"updated_at"];
-        [newManagedObject setValue:[NSNumber numberWithBool:NO] forKey:@"trashed"];
-        [self.list setValue:[NSDate date] forKey:@"updated_at"];
+        newTask.identifier = [@"local_" stringByAppendingString:[NSString UUID]];
+        newTask.title = name;
+        newTask.list = self.list;
+        newTask.trashed = [NSNumber numberWithBool:NO];
+        newTask.updated_at = self.list.updated_at = [NSDate date];
         
         // Save the context.
         NSError *error = nil;
@@ -144,9 +134,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        Task *task = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         DetailViewController *details = (DetailViewController *)[[segue destinationViewController] topViewController];
-        [details setTask:object];
+        [details setTask:task];
         [details setFetchedResultsController:self.fetchedResultsController];
     }
 }
@@ -160,6 +150,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     return [sectionInfo numberOfObjects];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> theSection = [[self.fetchedResultsController sections] objectAtIndex:section];
+    
+    return [theSection name];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -176,16 +172,10 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        Task *task = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-        [[object valueForKey:@"list"]
-         setValue:[NSDate date]
-         forKey:@"updated_at"];
-        [object
-         setValue:[NSNumber numberWithBool:YES]
-         forKey:@"trashed"];
-        
-//        [NSFetchedResultsController deleteCacheWithName:[@"Tasks_" stringByAppendingString:[self.list valueForKey:@"identifier"]]];
+        task.trashed = [NSNumber numberWithBool:YES];
+        task.list.updated_at = [NSDate date];
         
         NSError *error = nil;
         if (![context save:&error]) {
@@ -205,9 +195,9 @@
 //}
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    Task *task = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    if ([object valueForKey:@"completed_at"] == nil) {
+    if (task.completed_at == nil) {
         cell.imageView.image = [UIImage imageNamed:@"unchecked"];
     } else {
         cell.imageView.image = [UIImage imageNamed:@"checked"];
@@ -217,8 +207,16 @@
     [cell.imageView addGestureRecognizer:tap];
     cell.imageView.userInteractionEnabled = YES; //added based on @John 's comment
     
-    cell.textLabel.text = [object valueForKey:@"title"];
-    cell.detailTextLabel.text = [[object valueForKey:@"updated_at"] description];
+    cell.textLabel.text = task.title;
+    NSString *last_modified = [NSDateFormatter localizedStringFromDate:task.updated_at dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
+    
+    cell.detailTextLabel.text = last_modified;
+    if([((AppDelegate *)[UIApplication sharedApplication].delegate) googleIsSignedIn]) {
+        if([task isNew])
+            cell.detailTextLabel.text = [@"(Never synced) - " stringByAppendingString: last_modified];
+        else if(task.updated_at > task.synced_at)
+            cell.detailTextLabel.text = [@"(Need sync) - " stringByAppendingString:last_modified];
+    }
 }
 
 #pragma mark - Fetched results controller
@@ -229,7 +227,7 @@
         return _fetchedResultsController;
     }
     
-    if (self.list && [self.list valueForKey:@"identifier"]) {
+    if (self.list && self.list.identifier) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         // Edit the entity name as appropriate.
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Task" inManagedObjectContext:self.managedObjectContext];
@@ -240,15 +238,17 @@
         
         // Edit the sort key as appropriate.
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"updated_at" ascending:NO];
-        NSArray *sortDescriptors = @[sortDescriptor];
+        NSSortDescriptor *sectionSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"completed_at" ascending:YES]; // Since completed_at is nil when task is not checked, sorting by completed_at makes unchecked records go first, and first section is determined by the first record.
+        
+        NSArray *sortDescriptors = @[sectionSortDescriptor, sortDescriptor];
         
         [fetchRequest setSortDescriptors:sortDescriptors];
         [fetchRequest setPredicate:[NSPredicate
-                                    predicateWithFormat:@"list.identifier == %@ AND trashed == FALSE", [self.list valueForKey:@"identifier"]]];
+                                    predicateWithFormat:@"list.identifier == %@ AND trashed == FALSE", self.list.identifier]];
         
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
-        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:[@"Tasks_" stringByAppendingString:[self.list valueForKey:@"identifier"]]];
+        NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"sectionName" cacheName:[@"Tasks_" stringByAppendingString:self.list.identifier]];
         aFetchedResultsController.delegate = self;
         self.fetchedResultsController = aFetchedResultsController;
         
@@ -300,7 +300,7 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            if ([[anObject valueForKey:@"trashed"] boolValue]) {
+            if (((Task *)anObject).trashed.boolValue) {
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             } else {
                 [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
