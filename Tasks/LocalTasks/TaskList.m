@@ -39,6 +39,7 @@
 - (GTLTasksTaskList *)convertToGTLTasksTaskList {
     GTLTasksTaskList *tasklist = [GTLTasksTaskList object];
     tasklist.title = self.title;
+    tasklist.updated = [GTLDateTime dateTimeWithDate:self.updated_at timeZone:[NSTimeZone systemTimeZone]];
     return tasklist;
 }
 
