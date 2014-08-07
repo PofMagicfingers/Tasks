@@ -67,7 +67,7 @@
     
 }
 
-- (void)testConvertingToGTLTasksTask {
+- (void)testConvertingToGTLTasksTaskList {
     
     // Setting some variables
     NSDate *date = [NSDate date];
