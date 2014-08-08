@@ -1,11 +1,16 @@
 Tasks
 =====
 
-A simple iOS Tasks app, with a Google Tasks sync feature. 
+A simple iOS Tasks app, with a Google Tasks sync feature.
 
-It's an Universal App, but it can't be build for the iPad Air simulator, for an unknown reason. I don't have any iPad Air to try it. 
+It's an Universal App.
 
-Works fine on my iPhone 4S and all other simulators though.
+Works fine on my iPhone 4S and all other simulators (except 64bits one).
+
+Requirements
+=====
+- Project was created on Xcode 6 beta 4, but compile without problems on Xcode 5.
+- Project can't compile targeting 64 bits devices simulators (a.k.a iPhone/iPad Retina 64bit, iPad Air)
 
 Why ?
 =====
